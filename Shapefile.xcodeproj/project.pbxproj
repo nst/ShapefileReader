@@ -1,0 +1,417 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0344B4DA1C9E9D72001DCDAB /* g1g15.dbf in Resources */ = {isa = PBXBuildFile; fileRef = 0344B4D71C9E9D72001DCDAB /* g1g15.dbf */; };
+		0344B4DB1C9E9D72001DCDAB /* g1g15.shp in Resources */ = {isa = PBXBuildFile; fileRef = 0344B4D81C9E9D72001DCDAB /* g1g15.shp */; };
+		0344B4DC1C9E9D72001DCDAB /* g1g15.shx in Resources */ = {isa = PBXBuildFile; fileRef = 0344B4D91C9E9D72001DCDAB /* g1g15.shx */; };
+		035D0FF21C9E1EA200BC89C8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035D0FF11C9E1EA200BC89C8 /* main.swift */; };
+		035D0FFB1C9E1EAF00BC89C8 /* X11Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035D0FF81C9E1EAF00BC89C8 /* X11Colors.swift */; };
+		035D0FFC1C9E1EAF00BC89C8 /* BitmapCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035D0FF91C9E1EAF00BC89C8 /* BitmapCanvas.swift */; };
+		035D0FFD1C9E1EAF00BC89C8 /* BinUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035D0FFA1C9E1EAF00BC89C8 /* BinUtils.swift */; };
+		035D0FFF1C9E1EB200BC89C8 /* Shapefile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035D0FFE1C9E1EB200BC89C8 /* Shapefile.swift */; };
+		035D10071C9E1FB200BC89C8 /* ShapefileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035D10061C9E1FB200BC89C8 /* ShapefileTests.swift */; };
+		035D10141C9E1FFA00BC89C8 /* Kantone.dbf in Resources */ = {isa = PBXBuildFile; fileRef = 035D100D1C9E1FFA00BC89C8 /* Kantone.dbf */; };
+		035D10151C9E1FFA00BC89C8 /* Kantone.prj in Resources */ = {isa = PBXBuildFile; fileRef = 035D100E1C9E1FFA00BC89C8 /* Kantone.prj */; };
+		035D10161C9E1FFA00BC89C8 /* Kantone.sbn in Resources */ = {isa = PBXBuildFile; fileRef = 035D100F1C9E1FFA00BC89C8 /* Kantone.sbn */; };
+		035D10171C9E1FFA00BC89C8 /* Kantone.sbx in Resources */ = {isa = PBXBuildFile; fileRef = 035D10101C9E1FFA00BC89C8 /* Kantone.sbx */; };
+		035D10181C9E1FFA00BC89C8 /* Kantone.shp in Resources */ = {isa = PBXBuildFile; fileRef = 035D10111C9E1FFA00BC89C8 /* Kantone.shp */; };
+		035D10191C9E1FFA00BC89C8 /* Kantone.shp.xml in Resources */ = {isa = PBXBuildFile; fileRef = 035D10121C9E1FFA00BC89C8 /* Kantone.shp.xml */; };
+		035D101A1C9E1FFA00BC89C8 /* Kantone.shx in Resources */ = {isa = PBXBuildFile; fileRef = 035D10131C9E1FFA00BC89C8 /* Kantone.shx */; };
+		035D101B1C9E208F00BC89C8 /* Shapefile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035D0FFE1C9E1EB200BC89C8 /* Shapefile.swift */; };
+		035D101C1C9E20C000BC89C8 /* BinUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035D0FFA1C9E1EAF00BC89C8 /* BinUtils.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		035D0FEC1C9E1EA200BC89C8 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0344B4D71C9E9D72001DCDAB /* g1g15.dbf */ = {isa = PBXFileReference; lastKnownFileType = file; path = g1g15.dbf; sourceTree = "<group>"; };
+		0344B4D81C9E9D72001DCDAB /* g1g15.shp */ = {isa = PBXFileReference; lastKnownFileType = file; path = g1g15.shp; sourceTree = "<group>"; };
+		0344B4D91C9E9D72001DCDAB /* g1g15.shx */ = {isa = PBXFileReference; lastKnownFileType = file; path = g1g15.shx; sourceTree = "<group>"; };
+		0344B4DD1C9EEAFF001DCDAB /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		035D0FEE1C9E1EA200BC89C8 /* Shapefile */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Shapefile; sourceTree = BUILT_PRODUCTS_DIR; };
+		035D0FF11C9E1EA200BC89C8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		035D0FF81C9E1EAF00BC89C8 /* X11Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = X11Colors.swift; sourceTree = "<group>"; };
+		035D0FF91C9E1EAF00BC89C8 /* BitmapCanvas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitmapCanvas.swift; sourceTree = "<group>"; };
+		035D0FFA1C9E1EAF00BC89C8 /* BinUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinUtils.swift; sourceTree = "<group>"; };
+		035D0FFE1C9E1EB200BC89C8 /* Shapefile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shapefile.swift; sourceTree = "<group>"; };
+		035D10041C9E1FB200BC89C8 /* ShapefileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShapefileTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		035D10061C9E1FB200BC89C8 /* ShapefileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapefileTests.swift; sourceTree = "<group>"; };
+		035D10081C9E1FB200BC89C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		035D100D1C9E1FFA00BC89C8 /* Kantone.dbf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Kantone.dbf; sourceTree = "<group>"; };
+		035D100E1C9E1FFA00BC89C8 /* Kantone.prj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Kantone.prj; sourceTree = "<group>"; };
+		035D100F1C9E1FFA00BC89C8 /* Kantone.sbn */ = {isa = PBXFileReference; lastKnownFileType = file; path = Kantone.sbn; sourceTree = "<group>"; };
+		035D10101C9E1FFA00BC89C8 /* Kantone.sbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = Kantone.sbx; sourceTree = "<group>"; };
+		035D10111C9E1FFA00BC89C8 /* Kantone.shp */ = {isa = PBXFileReference; lastKnownFileType = file; path = Kantone.shp; sourceTree = "<group>"; };
+		035D10121C9E1FFA00BC89C8 /* Kantone.shp.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Kantone.shp.xml; sourceTree = "<group>"; };
+		035D10131C9E1FFA00BC89C8 /* Kantone.shx */ = {isa = PBXFileReference; lastKnownFileType = file; path = Kantone.shx; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		035D0FEB1C9E1EA200BC89C8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		035D10011C9E1FB200BC89C8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0344B4D61C9E9D72001DCDAB /* g1g15 */ = {
+			isa = PBXGroup;
+			children = (
+				0344B4D71C9E9D72001DCDAB /* g1g15.dbf */,
+				0344B4D81C9E9D72001DCDAB /* g1g15.shp */,
+				0344B4D91C9E9D72001DCDAB /* g1g15.shx */,
+			);
+			path = g1g15;
+			sourceTree = "<group>";
+		};
+		035D0FE51C9E1EA200BC89C8 = {
+			isa = PBXGroup;
+			children = (
+				0344B4DD1C9EEAFF001DCDAB /* README.md */,
+				035D0FF81C9E1EAF00BC89C8 /* X11Colors.swift */,
+				035D0FF91C9E1EAF00BC89C8 /* BitmapCanvas.swift */,
+				035D0FFA1C9E1EAF00BC89C8 /* BinUtils.swift */,
+				035D0FF01C9E1EA200BC89C8 /* Shapefile */,
+				035D10051C9E1FB200BC89C8 /* ShapefileTests */,
+				035D0FEF1C9E1EA200BC89C8 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		035D0FEF1C9E1EA200BC89C8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				035D0FEE1C9E1EA200BC89C8 /* Shapefile */,
+				035D10041C9E1FB200BC89C8 /* ShapefileTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		035D0FF01C9E1EA200BC89C8 /* Shapefile */ = {
+			isa = PBXGroup;
+			children = (
+				0344B4D61C9E9D72001DCDAB /* g1g15 */,
+				035D0FFE1C9E1EB200BC89C8 /* Shapefile.swift */,
+				035D0FF11C9E1EA200BC89C8 /* main.swift */,
+			);
+			path = Shapefile;
+			sourceTree = "<group>";
+		};
+		035D10051C9E1FB200BC89C8 /* ShapefileTests */ = {
+			isa = PBXGroup;
+			children = (
+				035D100C1C9E1FFA00BC89C8 /* Kantone */,
+				035D10061C9E1FB200BC89C8 /* ShapefileTests.swift */,
+				035D10081C9E1FB200BC89C8 /* Info.plist */,
+			);
+			path = ShapefileTests;
+			sourceTree = "<group>";
+		};
+		035D100C1C9E1FFA00BC89C8 /* Kantone */ = {
+			isa = PBXGroup;
+			children = (
+				035D100D1C9E1FFA00BC89C8 /* Kantone.dbf */,
+				035D100E1C9E1FFA00BC89C8 /* Kantone.prj */,
+				035D100F1C9E1FFA00BC89C8 /* Kantone.sbn */,
+				035D10101C9E1FFA00BC89C8 /* Kantone.sbx */,
+				035D10111C9E1FFA00BC89C8 /* Kantone.shp */,
+				035D10121C9E1FFA00BC89C8 /* Kantone.shp.xml */,
+				035D10131C9E1FFA00BC89C8 /* Kantone.shx */,
+			);
+			path = Kantone;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		035D0FED1C9E1EA200BC89C8 /* Shapefile */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 035D0FF51C9E1EA200BC89C8 /* Build configuration list for PBXNativeTarget "Shapefile" */;
+			buildPhases = (
+				035D0FEA1C9E1EA200BC89C8 /* Sources */,
+				035D0FEB1C9E1EA200BC89C8 /* Frameworks */,
+				035D0FEC1C9E1EA200BC89C8 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Shapefile;
+			productName = Shapefile;
+			productReference = 035D0FEE1C9E1EA200BC89C8 /* Shapefile */;
+			productType = "com.apple.product-type.tool";
+		};
+		035D10031C9E1FB200BC89C8 /* ShapefileTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 035D10091C9E1FB200BC89C8 /* Build configuration list for PBXNativeTarget "ShapefileTests" */;
+			buildPhases = (
+				035D10001C9E1FB200BC89C8 /* Sources */,
+				035D10011C9E1FB200BC89C8 /* Frameworks */,
+				035D10021C9E1FB200BC89C8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ShapefileTests;
+			productName = ShapefileTests;
+			productReference = 035D10041C9E1FB200BC89C8 /* ShapefileTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		035D0FE61C9E1EA200BC89C8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "Nicolas Seriot";
+				TargetAttributes = {
+					035D0FED1C9E1EA200BC89C8 = {
+						CreatedOnToolsVersion = 7.2.1;
+					};
+					035D10031C9E1FB200BC89C8 = {
+						CreatedOnToolsVersion = 7.2.1;
+					};
+				};
+			};
+			buildConfigurationList = 035D0FE91C9E1EA200BC89C8 /* Build configuration list for PBXProject "Shapefile" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 035D0FE51C9E1EA200BC89C8;
+			productRefGroup = 035D0FEF1C9E1EA200BC89C8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				035D0FED1C9E1EA200BC89C8 /* Shapefile */,
+				035D10031C9E1FB200BC89C8 /* ShapefileTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		035D10021C9E1FB200BC89C8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0344B4DA1C9E9D72001DCDAB /* g1g15.dbf in Resources */,
+				035D10161C9E1FFA00BC89C8 /* Kantone.sbn in Resources */,
+				035D10141C9E1FFA00BC89C8 /* Kantone.dbf in Resources */,
+				035D10171C9E1FFA00BC89C8 /* Kantone.sbx in Resources */,
+				035D10151C9E1FFA00BC89C8 /* Kantone.prj in Resources */,
+				035D10181C9E1FFA00BC89C8 /* Kantone.shp in Resources */,
+				035D101A1C9E1FFA00BC89C8 /* Kantone.shx in Resources */,
+				035D10191C9E1FFA00BC89C8 /* Kantone.shp.xml in Resources */,
+				0344B4DB1C9E9D72001DCDAB /* g1g15.shp in Resources */,
+				0344B4DC1C9E9D72001DCDAB /* g1g15.shx in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		035D0FEA1C9E1EA200BC89C8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				035D0FFB1C9E1EAF00BC89C8 /* X11Colors.swift in Sources */,
+				035D0FFF1C9E1EB200BC89C8 /* Shapefile.swift in Sources */,
+				035D0FFC1C9E1EAF00BC89C8 /* BitmapCanvas.swift in Sources */,
+				035D0FF21C9E1EA200BC89C8 /* main.swift in Sources */,
+				035D0FFD1C9E1EAF00BC89C8 /* BinUtils.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		035D10001C9E1FB200BC89C8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				035D10071C9E1FB200BC89C8 /* ShapefileTests.swift in Sources */,
+				035D101C1C9E20C000BC89C8 /* BinUtils.swift in Sources */,
+				035D101B1C9E208F00BC89C8 /* Shapefile.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		035D0FF31C9E1EA200BC89C8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		035D0FF41C9E1EA200BC89C8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		035D0FF61C9E1EA200BC89C8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		035D0FF71C9E1EA200BC89C8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		035D100A1C9E1FB200BC89C8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = ShapefileTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = ch.seriot.ShapefileTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		035D100B1C9E1FB200BC89C8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = ShapefileTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = ch.seriot.ShapefileTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		035D0FE91C9E1EA200BC89C8 /* Build configuration list for PBXProject "Shapefile" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				035D0FF31C9E1EA200BC89C8 /* Debug */,
+				035D0FF41C9E1EA200BC89C8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		035D0FF51C9E1EA200BC89C8 /* Build configuration list for PBXNativeTarget "Shapefile" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				035D0FF61C9E1EA200BC89C8 /* Debug */,
+				035D0FF71C9E1EA200BC89C8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		035D10091C9E1FB200BC89C8 /* Build configuration list for PBXNativeTarget "ShapefileTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				035D100A1C9E1FB200BC89C8 /* Debug */,
+				035D100B1C9E1FB200BC89C8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 035D0FE61C9E1EA200BC89C8 /* Project object */;
+}
