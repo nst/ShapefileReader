@@ -534,7 +534,7 @@ class SHXReader {
     }
     
     func shapeOffsetAtIndex(i:Int) -> Int? {
-        return self.shapeOffsets[i]
+        return i < self.shapeOffsets.count ? self.shapeOffsets[i] : nil
     }
 }
 
@@ -564,7 +564,7 @@ class ShapefileReader {
             return nil
         }
 
-        let offset = shx.shapeOffsetAtIndex(i)!
+        guard let offset = shx.shapeOffsetAtIndex(i) else { return nil }
         
         if let (_, shape) = self.shp.shapeAtOffset(UInt64(offset)) {
             return shape
@@ -572,4 +572,17 @@ class ShapefileReader {
         
         return nil
     }
+    
+    func shapeRecordGenerator() -> AnyGenerator<(Shape, DBFReader.DBFRecord)> {
+        
+        var i = 0
+        
+        return anyGenerator {
+            guard let s = self[i] else { return nil }
+            guard let r = self.dbf?[i] else { return nil }
+            i += 1
+            return (s, r)
+        }
+    }
+
 }

@@ -68,6 +68,13 @@ if let shx = sr.shx {
     Polygon
     [(536987.156300001, 159265.289999999), (537952.996300001, 158971.131299999), (538014.390000001, 158915.75), ..., ]
 
+```swift
+// iterate over both shapes and records in the same time
+for (s,r) in sr.shapeRecordGenerator() {
+    //
+}
+```
+
 __Implementation Details__
 
 - points are CGPoint arrays
