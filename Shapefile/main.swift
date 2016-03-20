@@ -130,11 +130,9 @@ func draw() {
     
     /**/
     
-    let gen = sr.shp!.shapeGenerator()
-    for (recNum, shape) in gen.enumerate() {
-        let record = sr.dbf!.recordAtIndex(recNum)
+    for (shape, record) in sr.shapeRecordGenerator() {
         let altitude = record[15] as! Int
-        
+
         let factor = Double(altitude - alt_min) / Double(alt_max - alt_min)
         let color = NSColor(calibratedRed:CGFloat(factor), green:CGFloat(1.0-factor), blue:0.0, alpha:1.0)
         
