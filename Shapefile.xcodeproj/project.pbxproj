@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0344B4DA1C9E9D72001DCDAB /* g1g15.dbf in Resources */ = {isa = PBXBuildFile; fileRef = 0344B4D71C9E9D72001DCDAB /* g1g15.dbf */; };
-		0344B4DB1C9E9D72001DCDAB /* g1g15.shp in Resources */ = {isa = PBXBuildFile; fileRef = 0344B4D81C9E9D72001DCDAB /* g1g15.shp */; };
-		0344B4DC1C9E9D72001DCDAB /* g1g15.shx in Resources */ = {isa = PBXBuildFile; fileRef = 0344B4D91C9E9D72001DCDAB /* g1g15.shx */; };
+		0344B4E21C9EFB02001DCDAB /* BinUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0344B4DF1C9EFB02001DCDAB /* BinUtils.swift */; };
+		0344B4E31C9EFB02001DCDAB /* BinUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0344B4DF1C9EFB02001DCDAB /* BinUtils.swift */; };
+		0344B4E41C9EFB02001DCDAB /* BitmapCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0344B4E01C9EFB02001DCDAB /* BitmapCanvas.swift */; };
+		0344B4E51C9EFB02001DCDAB /* BitmapCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0344B4E01C9EFB02001DCDAB /* BitmapCanvas.swift */; };
+		0344B4E61C9EFB02001DCDAB /* X11Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0344B4E11C9EFB02001DCDAB /* X11Colors.swift */; };
+		0344B4E71C9EFB02001DCDAB /* X11Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0344B4E11C9EFB02001DCDAB /* X11Colors.swift */; };
 		035D0FF21C9E1EA200BC89C8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035D0FF11C9E1EA200BC89C8 /* main.swift */; };
-		035D0FFB1C9E1EAF00BC89C8 /* X11Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035D0FF81C9E1EAF00BC89C8 /* X11Colors.swift */; };
-		035D0FFC1C9E1EAF00BC89C8 /* BitmapCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035D0FF91C9E1EAF00BC89C8 /* BitmapCanvas.swift */; };
-		035D0FFD1C9E1EAF00BC89C8 /* BinUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035D0FFA1C9E1EAF00BC89C8 /* BinUtils.swift */; };
 		035D0FFF1C9E1EB200BC89C8 /* Shapefile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035D0FFE1C9E1EB200BC89C8 /* Shapefile.swift */; };
 		035D10071C9E1FB200BC89C8 /* ShapefileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035D10061C9E1FB200BC89C8 /* ShapefileTests.swift */; };
 		035D10141C9E1FFA00BC89C8 /* Kantone.dbf in Resources */ = {isa = PBXBuildFile; fileRef = 035D100D1C9E1FFA00BC89C8 /* Kantone.dbf */; };
@@ -24,7 +24,6 @@
 		035D10191C9E1FFA00BC89C8 /* Kantone.shp.xml in Resources */ = {isa = PBXBuildFile; fileRef = 035D10121C9E1FFA00BC89C8 /* Kantone.shp.xml */; };
 		035D101A1C9E1FFA00BC89C8 /* Kantone.shx in Resources */ = {isa = PBXBuildFile; fileRef = 035D10131C9E1FFA00BC89C8 /* Kantone.shx */; };
 		035D101B1C9E208F00BC89C8 /* Shapefile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035D0FFE1C9E1EB200BC89C8 /* Shapefile.swift */; };
-		035D101C1C9E20C000BC89C8 /* BinUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035D0FFA1C9E1EAF00BC89C8 /* BinUtils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -40,15 +39,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0344B4D71C9E9D72001DCDAB /* g1g15.dbf */ = {isa = PBXFileReference; lastKnownFileType = file; path = g1g15.dbf; sourceTree = "<group>"; };
-		0344B4D81C9E9D72001DCDAB /* g1g15.shp */ = {isa = PBXFileReference; lastKnownFileType = file; path = g1g15.shp; sourceTree = "<group>"; };
-		0344B4D91C9E9D72001DCDAB /* g1g15.shx */ = {isa = PBXFileReference; lastKnownFileType = file; path = g1g15.shx; sourceTree = "<group>"; };
 		0344B4DD1C9EEAFF001DCDAB /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		0344B4DF1C9EFB02001DCDAB /* BinUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinUtils.swift; sourceTree = "<group>"; };
+		0344B4E01C9EFB02001DCDAB /* BitmapCanvas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitmapCanvas.swift; sourceTree = "<group>"; };
+		0344B4E11C9EFB02001DCDAB /* X11Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = X11Colors.swift; sourceTree = "<group>"; };
+		0344B4E91C9EFB28001DCDAB /* g1g15.dbf */ = {isa = PBXFileReference; lastKnownFileType = file; path = g1g15.dbf; sourceTree = "<group>"; };
+		0344B4EA1C9EFB28001DCDAB /* g1g15.shp */ = {isa = PBXFileReference; lastKnownFileType = file; path = g1g15.shp; sourceTree = "<group>"; };
+		0344B4EB1C9EFB28001DCDAB /* g1g15.shx */ = {isa = PBXFileReference; lastKnownFileType = file; path = g1g15.shx; sourceTree = "<group>"; };
 		035D0FEE1C9E1EA200BC89C8 /* Shapefile */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Shapefile; sourceTree = BUILT_PRODUCTS_DIR; };
 		035D0FF11C9E1EA200BC89C8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		035D0FF81C9E1EAF00BC89C8 /* X11Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = X11Colors.swift; sourceTree = "<group>"; };
-		035D0FF91C9E1EAF00BC89C8 /* BitmapCanvas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitmapCanvas.swift; sourceTree = "<group>"; };
-		035D0FFA1C9E1EAF00BC89C8 /* BinUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinUtils.swift; sourceTree = "<group>"; };
 		035D0FFE1C9E1EB200BC89C8 /* Shapefile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shapefile.swift; sourceTree = "<group>"; };
 		035D10041C9E1FB200BC89C8 /* ShapefileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShapefileTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		035D10061C9E1FB200BC89C8 /* ShapefileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapefileTests.swift; sourceTree = "<group>"; };
@@ -80,23 +79,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0344B4D61C9E9D72001DCDAB /* g1g15 */ = {
+		0344B4DE1C9EFB02001DCDAB /* vendor */ = {
 			isa = PBXGroup;
 			children = (
-				0344B4D71C9E9D72001DCDAB /* g1g15.dbf */,
-				0344B4D81C9E9D72001DCDAB /* g1g15.shp */,
-				0344B4D91C9E9D72001DCDAB /* g1g15.shx */,
+				0344B4DF1C9EFB02001DCDAB /* BinUtils.swift */,
+				0344B4E01C9EFB02001DCDAB /* BitmapCanvas.swift */,
+				0344B4E11C9EFB02001DCDAB /* X11Colors.swift */,
 			);
-			path = g1g15;
+			path = vendor;
+			sourceTree = "<group>";
+		};
+		0344B4E81C9EFB28001DCDAB /* data */ = {
+			isa = PBXGroup;
+			children = (
+				0344B4E91C9EFB28001DCDAB /* g1g15.dbf */,
+				0344B4EA1C9EFB28001DCDAB /* g1g15.shp */,
+				0344B4EB1C9EFB28001DCDAB /* g1g15.shx */,
+			);
+			path = data;
 			sourceTree = "<group>";
 		};
 		035D0FE51C9E1EA200BC89C8 = {
 			isa = PBXGroup;
 			children = (
 				0344B4DD1C9EEAFF001DCDAB /* README.md */,
-				035D0FF81C9E1EAF00BC89C8 /* X11Colors.swift */,
-				035D0FF91C9E1EAF00BC89C8 /* BitmapCanvas.swift */,
-				035D0FFA1C9E1EAF00BC89C8 /* BinUtils.swift */,
+				0344B4E81C9EFB28001DCDAB /* data */,
+				0344B4DE1C9EFB02001DCDAB /* vendor */,
 				035D0FF01C9E1EA200BC89C8 /* Shapefile */,
 				035D10051C9E1FB200BC89C8 /* ShapefileTests */,
 				035D0FEF1C9E1EA200BC89C8 /* Products */,
@@ -115,7 +123,6 @@
 		035D0FF01C9E1EA200BC89C8 /* Shapefile */ = {
 			isa = PBXGroup;
 			children = (
-				0344B4D61C9E9D72001DCDAB /* g1g15 */,
 				035D0FFE1C9E1EB200BC89C8 /* Shapefile.swift */,
 				035D0FF11C9E1EA200BC89C8 /* main.swift */,
 			);
@@ -224,7 +231,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0344B4DA1C9E9D72001DCDAB /* g1g15.dbf in Resources */,
 				035D10161C9E1FFA00BC89C8 /* Kantone.sbn in Resources */,
 				035D10141C9E1FFA00BC89C8 /* Kantone.dbf in Resources */,
 				035D10171C9E1FFA00BC89C8 /* Kantone.sbx in Resources */,
@@ -232,8 +238,6 @@
 				035D10181C9E1FFA00BC89C8 /* Kantone.shp in Resources */,
 				035D101A1C9E1FFA00BC89C8 /* Kantone.shx in Resources */,
 				035D10191C9E1FFA00BC89C8 /* Kantone.shp.xml in Resources */,
-				0344B4DB1C9E9D72001DCDAB /* g1g15.shp in Resources */,
-				0344B4DC1C9E9D72001DCDAB /* g1g15.shx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,11 +248,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				035D0FFB1C9E1EAF00BC89C8 /* X11Colors.swift in Sources */,
 				035D0FFF1C9E1EB200BC89C8 /* Shapefile.swift in Sources */,
-				035D0FFC1C9E1EAF00BC89C8 /* BitmapCanvas.swift in Sources */,
+				0344B4E21C9EFB02001DCDAB /* BinUtils.swift in Sources */,
+				0344B4E61C9EFB02001DCDAB /* X11Colors.swift in Sources */,
+				0344B4E41C9EFB02001DCDAB /* BitmapCanvas.swift in Sources */,
 				035D0FF21C9E1EA200BC89C8 /* main.swift in Sources */,
-				035D0FFD1C9E1EAF00BC89C8 /* BinUtils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,7 +261,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				035D10071C9E1FB200BC89C8 /* ShapefileTests.swift in Sources */,
-				035D101C1C9E20C000BC89C8 /* BinUtils.swift in Sources */,
+				0344B4E31C9EFB02001DCDAB /* BinUtils.swift in Sources */,
+				0344B4E71C9EFB02001DCDAB /* X11Colors.swift in Sources */,
+				0344B4E51C9EFB02001DCDAB /* BitmapCanvas.swift in Sources */,
 				035D101B1C9E208F00BC89C8 /* Shapefile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

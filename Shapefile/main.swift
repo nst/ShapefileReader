@@ -102,7 +102,7 @@ func draw() {
     
     // http://www.bfs.admin.ch/bfs/portal/fr/index/dienstleistungen/geostat/datenbeschreibung/generalisierte_gemeindegrenzen.html
     
-    let path = "/Users/nst/Projects/dropbox/Shapefile/Shapefile/g1g15/g1g15.shp"
+    let path = "/Users/nst/Projects/ShapefileReader/data/g1g15.dbf"
     
     let sr = ShapefileReader(path:path)!
 

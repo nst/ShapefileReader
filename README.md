@@ -78,6 +78,8 @@ __Tests and Drawing__
 
 The project comes with a unit test target.
 
-Also, it comes with `BitmapCanvas` and its subclass `BitmapCanvasShapefile` which will draw a sample shapefile in a PNG file:
+Also, it comes with `BitmapCanvas` and its subclass `BitmapCanvasShapefile` which will generate the following PNG file.
+
+You just need to change the path at the beginning of the `draw()` function in `main.swift` according the project's location.
 
 <a href="img/switzerland.png"><img src="img/switzerland.png" width="890" alt="Switzerland Shapefile" /></a>
