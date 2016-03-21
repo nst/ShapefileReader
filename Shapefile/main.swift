@@ -45,11 +45,8 @@ class BitmapCanvasShapefile : BitmapCanvas {
         CGContextScaleCTM(self.cgContext, CGFloat(scale), CGFloat(scale))
         CGContextTranslateCTM(self.cgContext, CGFloat(-self.bbox.x_min), CGFloat(-self.bbox.y_min))
         
-        for range in shape.partsRanges() {
-            let from = range.location
-            let to = range.location + range.length
-            let partPoints = Array(shape.points[from..<to])
-            self.polygon(partPoints, lineWidth:CGFloat(1.0/scale), fill:color)
+        for points in shape.partPointsGenerator() {
+            self.polygon(points, lineWidth:CGFloat(1.0/scale), fill:color)
         }
         
         CGContextRestoreGState(self.cgContext)
@@ -103,6 +100,8 @@ func draw() {
     // http://www.bfs.admin.ch/bfs/portal/fr/index/dienstleistungen/geostat/datenbeschreibung/generalisierte_gemeindegrenzen.html
     
     let path = "/Users/nst/Projects/ShapefileReader/data/g1g15.dbf"
+    
+    assert(NSFileManager.defaultManager().fileExistsAtPath(path), "update the path of the dbf file according to your project's location")
     
     let sr = ShapefileReader(path:path)!
 

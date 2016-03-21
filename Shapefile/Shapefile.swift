@@ -74,21 +74,24 @@ class Shape {
     var z : Double = 0.0
     var m : [Double?] = []
     
-    func partsRanges() -> [NSRange] {
-        
-        if self.shapeType.hasParts == false { return [] }
-        
-        var polygonRanges : [NSRange] = []
+    func partPointsGenerator() -> AnyGenerator<[CGPoint]> {
         
         var indices = Array(self.parts)
         indices.append(self.points.count-1)
         
-        for i in 0..<indices.count-1 {
-            let range = NSMakeRange(indices[i], indices[i+1] - indices[i])
-            polygonRanges.append(range)
-        }
+        var i = 0
         
-        return polygonRanges
+        return anyGenerator {
+            if self.shapeType.hasParts == false { return nil }
+            
+            if i == indices.count - 1 { return nil }
+            
+            let partPoints = Array(self.points[indices[i]..<indices[i+1]])
+            
+            i += 1
+            
+            return partPoints
+        }
     }
 }
 
@@ -222,7 +225,7 @@ class DBFReader {
     subscript(i:Int) -> DBFRecord {
         return recordAtIndex(i)
     }
-
+    
     func recordAtIndex(i:Int = 0) -> DBFRecord {
         
         guard let f = self.fileHandle else {
@@ -237,14 +240,14 @@ class DBFReader {
     }
     
     func recordGenerator() -> AnyGenerator<DBFRecord> {
-
+        
         guard let n = self.numberOfRecords else {
             return anyGenerator {
                 print("-- unknown number of records")
                 return nil
             }
         }
-
+        
         var i = 0
         
         return anyGenerator {
@@ -297,7 +300,7 @@ class SHPReader {
             print("-- cannot open .shp for reading at \(path)")
             return nil
         }
-
+        
         self.fileHandle = f
         self.readHeader()
     }
@@ -307,7 +310,7 @@ class SHPReader {
     }
     
     private func readHeader() {
-
+        
         let f = self.fileHandle
         
         f.seekToFileOffset(24)
@@ -342,7 +345,7 @@ class SHPReader {
     }
     
     func shapeAtOffset(offset:UInt64) -> (next:UInt64, shape:Shape)? {
-
+        
         if offset == shpLength { return nil }
         assert(offset < shpLength, "trying to read shape at offset \(offset), but shpLength is only \(shpLength)")
         
@@ -351,7 +354,7 @@ class SHPReader {
         var nPoints : Int = 0
         
         let f = self.fileHandle
-
+        
         f.seekToFileOffset(offset)
         
         let l = unpack(">2i", f.readDataOfLength(8))
@@ -474,7 +477,7 @@ class SHXReader {
     
     var fileHandle : NSFileHandle!
     var shapeOffsets : [Int] = []
-
+    
     var numberOfShapes : Int {
         return shapeOffsets.count
     }
@@ -499,7 +502,7 @@ class SHXReader {
             print("no shx")
             return []
         }
-
+        
         // read number of records
         f.seekToFileOffset(24)
         let a = unpack(">i", f.readDataOfLength(4))
@@ -547,9 +550,9 @@ class ShapefileReader {
     var shapeName : String
     
     init?(path:String) {
-    
+        
         self.shapeName = (path as NSString).stringByDeletingPathExtension
-
+        
         guard let existingSHPReader = SHPReader(path: "\(shapeName).shp") else {
             return nil
         }
@@ -563,7 +566,7 @@ class ShapefileReader {
         guard let shx = self.shx else {
             return nil
         }
-
+        
         guard let offset = shx.shapeOffsetAtIndex(i) else { return nil }
         
         if let (_, shape) = self.shp.shapeAtOffset(UInt64(offset)) {
@@ -584,5 +587,5 @@ class ShapefileReader {
             return (s, r)
         }
     }
-
+    
 }
