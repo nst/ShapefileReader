@@ -576,7 +576,7 @@ class ShapefileReader {
         return nil
     }
     
-    func shapeRecordGenerator() -> AnyGenerator<(Shape, DBFReader.DBFRecord)> {
+    func shapeAndRecordGenerator() -> AnyGenerator<(Shape, DBFReader.DBFRecord)> {
         
         var i = 0
         

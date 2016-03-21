@@ -14,11 +14,13 @@ Internally, it builds the three following objects, depending on the available au
 - `DBFReader` to read the data records associated with the shapes
 - `SHXReader` to read the indices of the shapes, thus allowing direct access
 
+Most usages of `ShapefileReader` will remain like:
+
 ```swift
 guard let sr = ShapefileReader(path: "g1g15.shp") else { assertionFailure() }
 
 // iterate over both shapes and records
-for (shape, record) in sr.shapeRecordGenerator() {
+for (shape, record) in sr.shapeAndRecordGenerator() {
     // record is [AnyObject]
 
     for points in shape.partPointsGenerator() {
@@ -35,15 +37,16 @@ if let dbf = sr.dbf {
     // number of records
     let n = dbf.numberOfRecords
     
+    // fields description
+    print(dbf.fields)
+    
     // iterate over records
     for r in dbf.recordGenerator() {
         // ...
     }
     
-    // access a record by its index
-    print(dbf.fields)
-    let r = dbf[1847]
-    print(r)
+    // access a record by index
+    print(dbf[1847])
 }
 ```
 
@@ -55,16 +58,20 @@ SHX API
 ```swift
 // if index file exists
 if let shx = sr.shx {
-    // access a shape by its index
-    if let shape = sr[1847] {
-        print(shape.shapeType)
-        print(shape.points)
+    // access a shape by index
+    if let offset = shx.shapeOffsetAtIndex(2) {
+    	if let (nextIndex, shape) = shp.shapeAtOffset(offset) {
+	        // use shape   	
+    	}
     }
 }
 ```
 
-    Polygon
-    [(536987.156300001, 159265.289999999), (537952.996300001, 158971.131299999), (538014.390000001, 158915.75), ..., ]
+or more simply
+
+```swift
+let shape = sr[2]
+```
 
 __Implementation Details__
 

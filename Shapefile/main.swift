@@ -129,7 +129,7 @@ func draw() {
     
     /**/
     
-    for (shape, record) in sr.shapeRecordGenerator() {
+    for (shape, record) in sr.shapeAndRecordGenerator() {
         let altitude = record[15] as! Int
 
         let factor = Double(altitude - alt_min) / Double(alt_max - alt_min)
