@@ -146,7 +146,7 @@ func drawAltitudes() {
 
 func zipForTownCodeDictionary() -> [Int:(Int,String)] {
     // http://www.taed.ch/dl/plz_p1.txt
-    let path = "/Users/nst/Desktop/plz_p1.txt"
+    let path = "/Users/nst/Projects/ShapefileReader/data/plz_p1.txt"
     
     let s = try! NSString(contentsOfFile: path, encoding: NSUTF8StringEncoding)
     

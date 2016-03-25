@@ -63,7 +63,8 @@
 		035D10111C9E1FFA00BC89C8 /* Kantone.shp */ = {isa = PBXFileReference; lastKnownFileType = file; path = Kantone.shp; sourceTree = "<group>"; };
 		035D10121C9E1FFA00BC89C8 /* Kantone.shp.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Kantone.shp.xml; sourceTree = "<group>"; };
 		035D10131C9E1FFA00BC89C8 /* Kantone.shx */ = {isa = PBXFileReference; lastKnownFileType = file; path = Kantone.shx; sourceTree = "<group>"; };
-		03B708871CA5AEE700F3B3A0 /* readme.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
+		03B708871CA5AEE700F3B3A0 /* data_sources.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = data_sources.txt; sourceTree = "<group>"; };
+		03B708881CA5B1A000F3B3A0 /* plz_p1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = plz_p1.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,7 +98,8 @@
 		0344B4E81C9EFB28001DCDAB /* data */ = {
 			isa = PBXGroup;
 			children = (
-				03B708871CA5AEE700F3B3A0 /* readme.txt */,
+				03B708871CA5AEE700F3B3A0 /* data_sources.txt */,
+				03B708881CA5B1A000F3B3A0 /* plz_p1.txt */,
 				032E45ED1CA3E12A006C4622 /* Conditions_d'exploitation-Copyright_OFS_GEOSTAT.pdf */,
 				032E45EA1CA3E0CC006C4622 /* g2g15.shx */,
 				032E45EB1CA3E0CC006C4622 /* g2g15.shp */,

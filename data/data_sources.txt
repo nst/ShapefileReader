@@ -1,1 +1,6 @@
+data sources
+------------
+
 http://www.bfs.admin.ch/bfs/portal/fr/index/dienstleistungen/geostat/datenbeschreibung/generalisierte_gemeindegrenzen.html
+
+http://www.taed.ch/dl/plz_p1.txt
