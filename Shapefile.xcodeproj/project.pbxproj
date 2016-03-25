@@ -39,13 +39,17 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		032E45E71CA3E07E006C4622 /* g1k15.dbf */ = {isa = PBXFileReference; lastKnownFileType = file; path = g1k15.dbf; sourceTree = "<group>"; };
+		032E45E81CA3E07E006C4622 /* g1k15.shp */ = {isa = PBXFileReference; lastKnownFileType = file; path = g1k15.shp; sourceTree = "<group>"; };
+		032E45E91CA3E07E006C4622 /* g1k15.shx */ = {isa = PBXFileReference; lastKnownFileType = file; path = g1k15.shx; sourceTree = "<group>"; };
+		032E45EA1CA3E0CC006C4622 /* g2g15.shx */ = {isa = PBXFileReference; lastKnownFileType = file; path = g2g15.shx; sourceTree = "<group>"; };
+		032E45EB1CA3E0CC006C4622 /* g2g15.shp */ = {isa = PBXFileReference; lastKnownFileType = file; path = g2g15.shp; sourceTree = "<group>"; };
+		032E45EC1CA3E0CC006C4622 /* g2g15.dbf */ = {isa = PBXFileReference; lastKnownFileType = file; path = g2g15.dbf; sourceTree = "<group>"; };
+		032E45ED1CA3E12A006C4622 /* Conditions_d'exploitation-Copyright_OFS_GEOSTAT.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Conditions_d'exploitation-Copyright_OFS_GEOSTAT.pdf"; sourceTree = "<group>"; };
 		0344B4DD1C9EEAFF001DCDAB /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		0344B4DF1C9EFB02001DCDAB /* BinUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinUtils.swift; sourceTree = "<group>"; };
 		0344B4E01C9EFB02001DCDAB /* BitmapCanvas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitmapCanvas.swift; sourceTree = "<group>"; };
 		0344B4E11C9EFB02001DCDAB /* X11Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = X11Colors.swift; sourceTree = "<group>"; };
-		0344B4E91C9EFB28001DCDAB /* g1g15.dbf */ = {isa = PBXFileReference; lastKnownFileType = file; path = g1g15.dbf; sourceTree = "<group>"; };
-		0344B4EA1C9EFB28001DCDAB /* g1g15.shp */ = {isa = PBXFileReference; lastKnownFileType = file; path = g1g15.shp; sourceTree = "<group>"; };
-		0344B4EB1C9EFB28001DCDAB /* g1g15.shx */ = {isa = PBXFileReference; lastKnownFileType = file; path = g1g15.shx; sourceTree = "<group>"; };
 		035D0FEE1C9E1EA200BC89C8 /* Shapefile */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Shapefile; sourceTree = BUILT_PRODUCTS_DIR; };
 		035D0FF11C9E1EA200BC89C8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		035D0FFE1C9E1EB200BC89C8 /* Shapefile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shapefile.swift; sourceTree = "<group>"; };
@@ -59,6 +63,7 @@
 		035D10111C9E1FFA00BC89C8 /* Kantone.shp */ = {isa = PBXFileReference; lastKnownFileType = file; path = Kantone.shp; sourceTree = "<group>"; };
 		035D10121C9E1FFA00BC89C8 /* Kantone.shp.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Kantone.shp.xml; sourceTree = "<group>"; };
 		035D10131C9E1FFA00BC89C8 /* Kantone.shx */ = {isa = PBXFileReference; lastKnownFileType = file; path = Kantone.shx; sourceTree = "<group>"; };
+		03B708871CA5AEE700F3B3A0 /* readme.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,9 +97,14 @@
 		0344B4E81C9EFB28001DCDAB /* data */ = {
 			isa = PBXGroup;
 			children = (
-				0344B4E91C9EFB28001DCDAB /* g1g15.dbf */,
-				0344B4EA1C9EFB28001DCDAB /* g1g15.shp */,
-				0344B4EB1C9EFB28001DCDAB /* g1g15.shx */,
+				03B708871CA5AEE700F3B3A0 /* readme.txt */,
+				032E45ED1CA3E12A006C4622 /* Conditions_d'exploitation-Copyright_OFS_GEOSTAT.pdf */,
+				032E45EA1CA3E0CC006C4622 /* g2g15.shx */,
+				032E45EB1CA3E0CC006C4622 /* g2g15.shp */,
+				032E45EC1CA3E0CC006C4622 /* g2g15.dbf */,
+				032E45E71CA3E07E006C4622 /* g1k15.dbf */,
+				032E45E81CA3E07E006C4622 /* g1k15.shp */,
+				032E45E91CA3E07E006C4622 /* g1k15.shx */,
 			);
 			path = data;
 			sourceTree = "<group>";

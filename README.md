@@ -88,4 +88,11 @@ Also, it comes with `BitmapCanvas` and its subclass `BitmapCanvasShapefile` whic
 
 You just need to change the path at the beginning of the `draw()` function in `main.swift` according the project's location.
 
-<a href="img/switzerland.png"><img src="img/switzerland.png" width="890" alt="Switzerland Shapefile" /></a>
+<a href="img/switzerland_altitude.png"><img src="img/switzerland_altitude.png" width="890" alt="Switzerland Altitude" /></a>
+
+<a href="img/switzerland_zip.png"><img src="img/switzerland_zip.png" width="890" alt="Switzerland ZIP Codes" /></a>
+
+__TODO__
+
+Handle projection files, eg. from http://www.gadm.org/download.
+

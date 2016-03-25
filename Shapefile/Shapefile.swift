@@ -196,7 +196,7 @@ class DBFReader {
             case "N": // Numeric, Number stored as a string, right justified, and padded with blanks to the width of the field.
                 if trimmedValue == "" {
                     v = trimmedValue
-                } else if deci {
+                } else if deci || trimmedValue.containsString(".") {
                     v = Double(trimmedValue)!
                 } else {
                     v = Int(trimmedValue)!
