@@ -405,7 +405,7 @@ class BitmapCanvas {
         return success
     }
     
-    private func textWidth(text:NSString, font:NSFont) -> CGFloat {
+    static func textWidth(text:NSString, font:NSFont) -> CGFloat {
         let maxSize : CGSize = CGSizeMake(CGFloat.max, font.pointSize)
         let textRect : CGRect = text.boundingRectWithSize(
             maxSize,

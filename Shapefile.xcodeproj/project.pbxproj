@@ -26,6 +26,7 @@
 		035D101B1C9E208F00BC89C8 /* Shapefile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035D0FFE1C9E1EB200BC89C8 /* Shapefile.swift */; };
 		03B7088A1CA5F08700F3B3A0 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B708891CA5F08700F3B3A0 /* CanvasView.swift */; };
 		03B7088C1CA5F6D200F3B3A0 /* ShapefileBitmap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B7088B1CA5F6D200F3B3A0 /* ShapefileBitmap.swift */; };
+		03B708931CA73C2400F3B3A0 /* ShapefileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B708921CA73C2400F3B3A0 /* ShapefileView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -69,6 +70,7 @@
 		03B708881CA5B1A000F3B3A0 /* plz_p1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = plz_p1.txt; sourceTree = "<group>"; };
 		03B708891CA5F08700F3B3A0 /* CanvasView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CanvasView.swift; path = ../vendor/CanvasView.swift; sourceTree = "<group>"; };
 		03B7088B1CA5F6D200F3B3A0 /* ShapefileBitmap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShapefileBitmap.swift; sourceTree = "<group>"; };
+		03B708921CA73C2400F3B3A0 /* ShapefileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShapefileView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,6 +177,7 @@
 			children = (
 				03B7088B1CA5F6D200F3B3A0 /* ShapefileBitmap.swift */,
 				03B708891CA5F08700F3B3A0 /* CanvasView.swift */,
+				03B708921CA73C2400F3B3A0 /* ShapefileView.swift */,
 			);
 			name = viewers;
 			path = Shapefile;
@@ -277,6 +280,7 @@
 			files = (
 				035D0FFF1C9E1EB200BC89C8 /* Shapefile.swift in Sources */,
 				0344B4E21C9EFB02001DCDAB /* BinUtils.swift in Sources */,
+				03B708931CA73C2400F3B3A0 /* ShapefileView.swift in Sources */,
 				0344B4E61C9EFB02001DCDAB /* X11Colors.swift in Sources */,
 				0344B4E41C9EFB02001DCDAB /* BitmapCanvas.swift in Sources */,
 				03B7088A1CA5F08700F3B3A0 /* CanvasView.swift in Sources */,

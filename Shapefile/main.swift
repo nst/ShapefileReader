@@ -80,66 +80,50 @@ func zipForTownCodeDictionary() -> [Int:(Int,String)] {
     return d
 }
 
+
 func colorForZIP(zip:Int) -> NSColor {
     
     var color = "black".color
     
     let s = String(zip)
     
-    if s.hasPrefix("10") { color = "red".color } else
-    if s.hasPrefix("11") { color = "forestGreen".color } else
-    if s.hasPrefix("12") { color = "orchid".color } else
-    if s.hasPrefix("13") { color = "gold".color } else
-    if s.hasPrefix("14") { color = "forestGreen".color } else
-    if s.hasPrefix("15") { color = "chocolate".color } else
-    if s.hasPrefix("16") { color = "forestGreen".color } else
-    if s.hasPrefix("17") { color = "blue".color } else
-    if s.hasPrefix("18") { color = "gold".color } else
-    if s.hasPrefix("19") { color = "red".color } else
-    if s.hasPrefix("2") { color = "gold".color } else
-    if s.hasPrefix("37") { color = "orchid".color } else
-    if s.hasPrefix("38") { color = "chocolate".color } else
-    if s.hasPrefix("39") { color = "forestGreen".color } else
-    if s.hasPrefix("3") { color = "darkSlateGray".color } else
-    if s.hasPrefix("4") { color = "orchid".color } else
-    if s.hasPrefix("5") { color = "chocolate".color } else
-    if s.hasPrefix("65") { color = "orchid".color } else
-    if s.hasPrefix("66") { color = "blue".color } else
-    if s.hasPrefix("67") { color = "gold".color } else
-    if s.hasPrefix("68") { color = "chocolate".color } else
-    if s.hasPrefix("69") { color = "forestGreen".color } else
-    if s.hasPrefix("6") { color = "red".color } else
+    if s.hasPrefix("1") { color = "orchid".color } else
+    if s.hasPrefix("2") { color = "forestGreen".color } else
+    if s.hasPrefix("3") { color = "chocolate".color } else
+    if s.hasPrefix("4") { color = "gold".color } else
+    if s.hasPrefix("5") { color = "forestGreen".color } else
+    if s.hasPrefix("6") { color = "orchid".color } else
     if s.hasPrefix("7") { color = "forestGreen".color } else
     if s.hasPrefix("8") { color = "gold".color } else
     if s.hasPrefix("9") { color = "orchid".color }
     
-    let divisor =
-    s.hasPrefix("1") ||
-        s.hasPrefix("37") ||
-        s.hasPrefix("38") ||
-        s.hasPrefix("39") ||
-        s.hasPrefix("65") ||
-        s.hasPrefix("66") ||
-        s.hasPrefix("67") ||
-        s.hasPrefix("68") ||
-        s.hasPrefix("69")
-        ? 100 : 1000
-    
-    var factor = Double(zip % divisor) / Double(divisor)
-    factor = min(factor, 0.8)
+    let factor = Double(zip % 1000) / 1000.0
     
     let (r,g,b) = (color.redComponent, color.greenComponent, color.blueComponent)
     
-    let r2 : CGFloat = r + (1.0 - r) * factor
-    let g2 : CGFloat = g + (1.0 - g) * factor
-    let b2 : CGFloat = b + (1.0 - b) * factor
-    
+    let r2 : CGFloat = r + (0.8 - r/2.0) * factor*0.8
+    let g2 : CGFloat = g + (0.8 - g/2.0) * factor*0.8
+    let b2 : CGFloat = b + (0.8 - b/2.0) * factor*0.8
+
+//    let r2 : CGFloat = r + (1.0 - r) * factor*0.85
+//    let g2 : CGFloat = g + (1.0 - g) * factor*0.85
+//    let b2 : CGFloat = b + (1.0 - b) * factor*0.85
+
     return NSColor(calibratedRed:r2, green:g2, blue:b2, alpha:1.0)
 }
 
-func drawZipLabel(b:BitmapCanvas, _ zip:Int, _ p:CGPoint) {
-    b.rectangle(R(p.x,p.y,75,32), stroke:"black", fill:colorForZIP(zip))
-    b.text(String(zip), P(p.x+10,p.y+5), font:NSFont(name: "Courier", size: 24)!)
+func drawZipLabel(b:BitmapCanvas, _ zip:Int, _ p:CGPoint, _ name:String?=nil) {
+    var s = String(zip)
+    if let n = name {
+        s += " \(n)"
+    }
+    
+    let font = NSFont(name: "Courier", size: 18)!
+    
+    let textWidth = BitmapCanvas.textWidth(s, font:font)
+    
+    b.rectangle(R(p.x,p.y,10 + textWidth,26), stroke:"black", fill:colorForZIP(zip))
+    b.text(s, P(p.x+5,p.y+5), font:font)
 }
 
 func printZipDistribution(zipForTownCode:[Int:(Int,String)]) {
@@ -170,7 +154,7 @@ func drawZIPCodes() {
     printZipDistribution(zipForTownCode)
     
     // g2g15.shp // communes
-    let sr = ShapefileReader(path: "/Users/nst/Desktop/ShapefileReader/data/g2g15.shp")!
+    let sr = ShapefileReader(path: "/Users/nst/Projects/ShapefileReader/data/g2g15.shp")!
     
     let b = ShapefileBitmap(maxWidth: 2000, maxHeight: 2000, bbox:sr.shp!.bbox, color:"SkyBlue")!
     
@@ -186,15 +170,13 @@ func drawZIPCodes() {
     b.setAllowsAntialiasing(true)
     
     for (shape, record) in sr.shapeAndRecordGenerator() {
-        //        print(record)
         let n = record[0] as! Int
         
         var color = "black".color
         if let (zip, _) = zipForTownCode[n] {
+            //if zip != 1950 { continue }
+
             color = colorForZIP(zip)
-            
-            //            if String(zip).hasPrefix("69") == false { continue }
-            
         } else {
             print("-- cannot find zip for town \(record)")
         }
@@ -203,7 +185,7 @@ func drawZIPCodes() {
     }
     
     // g1k15.shp // cantons
-    let src = ShapefileReader(path: "/Users/nst/Desktop/ShapefileReader/data/g1k15.shp")!
+    let src = ShapefileReader(path: "/Users/nst/Projects/ShapefileReader/data/g1k15.shp")!
     
     for shape in src.shp.shapeGenerator() {
         b.shape(shape, NSColor.clearColor(), lineWidth: 1.5)
@@ -211,177 +193,52 @@ func drawZIPCodes() {
     
     // ZIP labels
     
-    drawZipLabel(b, 1000, P(265,841))
+    drawZipLabel(b, 1000, P(276,841), "Lausanne")
     drawZipLabel(b, 1100, P(166,865))
-    drawZipLabel(b, 1200, P(122,1044))
-    drawZipLabel(b, 1300, P(88,670))
-    drawZipLabel(b, 1400, P(132,617))
+    drawZipLabel(b, 1200, P(122,1044), "Genève")
+    drawZipLabel(b, 1300, P(88,670), "Éclépens")
+    drawZipLabel(b, 1400, P(324,673), "Yverdon")
     drawZipLabel(b, 1500, P(395,635))
     drawZipLabel(b, 1600, P(469,778))
-    drawZipLabel(b, 1700, P(531,663))
-    drawZipLabel(b, 1800, P(299,971))
+    drawZipLabel(b, 1700, P(531,663), "Fribourg")
+    drawZipLabel(b, 1800, P(412,865), "Vevey")
     drawZipLabel(b, 1900, P(365,1162))
+    drawZipLabel(b, 1950, P(632,1012), "Sion")
     
-    drawZipLabel(b, 2000, P(285,414))
-    drawZipLabel(b, 3000, P(640,535))
-    drawZipLabel(b, 3700, P(676,789))
-    drawZipLabel(b, 3800, P(918,745))
-    drawZipLabel(b, 3900, P(939,1100))
+    drawZipLabel(b, 2000, P(279,460), "Neuchâtel")
     
-    drawZipLabel(b, 4000, P(641,111))
-    drawZipLabel(b, 5000, P(904,97))
-    drawZipLabel(b, 6000, P(969,535))
-    drawZipLabel(b, 6500, P(1484,964))
-    drawZipLabel(b, 6600, P(1062,1024))
+    drawZipLabel(b, 3000, P(640,535), "Bern")
+    drawZipLabel(b, 3700, P(666,726), "Spiez")
+    drawZipLabel(b, 3800, P(850,727), "Interlaken")
+    drawZipLabel(b, 3900, P(899,974), "Brig")
+    
+    drawZipLabel(b, 4000, P(641,111), "Basel")
+
+    drawZipLabel(b, 5000, P(920,223), "Aarau")
+    
+    drawZipLabel(b, 6000, P(1009,503), "Luzern")
+    drawZipLabel(b, 6400, P(1131,406), "Zug")
+    drawZipLabel(b, 6500, P(1384,1008), "Bellinzona")
+    drawZipLabel(b, 6600, P(1096,1031), "Locarno")
     drawZipLabel(b, 6700, P(1262,819))
     drawZipLabel(b, 6800, P(1410,1210))
-    drawZipLabel(b, 6900, P(1405,1094))
+    drawZipLabel(b, 6900, P(1379,1117), "Lugano")
     
-    drawZipLabel(b, 7000, P(1752,513))
-    drawZipLabel(b, 8000, P(1293,47))
-    drawZipLabel(b, 9000, P(1611,286))
+    drawZipLabel(b, 7000, P(1582,595), "Chur")
+    drawZipLabel(b, 7500, P(1703,721), "St. Moritz")
+
+    drawZipLabel(b, 8000, P(1128,250), "Zürich")
+    drawZipLabel(b, 8200, P(1167,47), "Schaffhausen")
+    drawZipLabel(b, 8400, P(1219,185), "Winterthur")
+    drawZipLabel(b, 8500, P(1295,144), "Frauenfeld")
+    
+    drawZipLabel(b, 9000, P(1504,234), "St. Gallen")
     
     b.save("/tmp/switzerland_zip.png", open: true)
 }
 
-class ShapefileView : CanvasView {
-    
-    var scale = 1.0
-    var bbox = (x_min:0.0, y_min:0.0, x_max:0.0, y_max:0.0)
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
-    init?(maxWidth:Int, maxHeight:Int, bbox:(x_min:Double, y_min:Double, x_max:Double, y_max:Double), color:ConvertibleToNSColor?) {
-        
-        self.bbox = bbox
-        let bbox_w = bbox.x_max - bbox.x_min
-        let bbox_h = bbox.y_max - bbox.y_min
-        
-        let isBboxWiderThanThanHeight = bbox_w > bbox_h
-        
-        let maxWidth = 2000
-        let maxHeight = 2000
-        
-        self.scale = isBboxWiderThanThanHeight ? (Double(maxWidth) / bbox_w) : (Double(maxHeight) / bbox_h)
-        
-        Swift.print("-- scale: \(scale)")
-        
-        let (w,h) = (bbox_w * scale, bbox_h * scale)
-        
-        super.init(frame: NSMakeRect(0, 0, CGFloat(w), CGFloat(h)))
-    }
-    
-    override func drawRect(dirtyRect: NSRect) {
-        
-        super.drawRect(dirtyRect)
-        
-        let shapefileReader = ShapefileReader(path: "/Users/nst/Desktop/ShapefileReader/data/g2g15.shp")!
-        
-        let context = unsafeBitCast(NSGraphicsContext.currentContext()!.graphicsPort, CGContextRef.self)
-        
-        CGContextSaveGState(context)
-        
-        // makes coordinates start upper left
-        CGContextTranslateCTM(context, 0, CGFloat(self.bounds.height))
-        CGContextScaleCTM(context, 1.0, -1.0)
-        
-        "skyBlue".color.setFill()
-        NSBezierPath.fillRect(dirtyRect)
-        
-        let zipForTownCode = zipForTownCodeDictionary()
-        
-        self.rectangle(R(10,10,665,40), stroke: "black", fill: "white")
-        
-        self.text("ZIP codes of the 2328 swiss towns, 2015", P(15,15), font:NSFont(name: "Helvetica", size: 36)!)
-        
-        self.text("Generated with ShapefileReader https://github.com/nst/ShapefileReader", P(10,self.bounds.height-35))
-        self.text("Data: Federal Statistical Office (FSO), GEOSTAT: g2g15, g1k15", P(10,self.bounds.height-20))
-        
-        for (shape, record) in shapefileReader.shapeAndRecordGenerator() {
-            //print(record)
-            let n = record[0] as! Int
-            
-            var color = "black".color
-            if let (zip, _) = zipForTownCode[n] {
-                color = colorForZIP(zip)
-            } else {
-                Swift.print("-- cannot find zip for town \(record)")
-            }
-            
-            self.shape(context, shape, color, lineWidth: 0.5)
-        }
-        
-        // g1k15.shp // cantons
-        let src = ShapefileReader(path: "/Users/nst/Desktop/ShapefileReader/data/g1k15.shp")!
-        
-        for shape in src.shp.shapeGenerator() {
-            self.shape(context, shape, NSColor.clearColor(), lineWidth: 1.5)
-        }
-        
-        // ZIP labels
-        
-        drawZipLabel(context, 1000, P(265,841))
-        drawZipLabel(context, 1100, P(166,865))
-        drawZipLabel(context, 1200, P(122,1044))
-        drawZipLabel(context, 1300, P(88,670))
-        drawZipLabel(context, 1400, P(132,617))
-        drawZipLabel(context, 1500, P(395,635))
-        drawZipLabel(context, 1600, P(469,778))
-        drawZipLabel(context, 1700, P(531,663))
-        drawZipLabel(context, 1800, P(299,971))
-        drawZipLabel(context, 1900, P(365,1162))
-        
-        drawZipLabel(context, 2000, P(285,414))
-        drawZipLabel(context, 3000, P(640,535))
-        drawZipLabel(context, 3700, P(676,789))
-        drawZipLabel(context, 3800, P(918,745))
-        drawZipLabel(context, 3900, P(939,1100))
-        
-        drawZipLabel(context, 4000, P(641,111))
-        drawZipLabel(context, 5000, P(904,97))
-        drawZipLabel(context, 6000, P(969,535))
-        drawZipLabel(context, 6500, P(1484,964))
-        drawZipLabel(context, 6600, P(1062,1024))
-        drawZipLabel(context, 6700, P(1262,819))
-        drawZipLabel(context, 6800, P(1410,1210))
-        drawZipLabel(context, 6900, P(1405,1094))
-        
-        drawZipLabel(context, 7000, P(1752,513))
-        drawZipLabel(context, 8000, P(1293,47))
-        drawZipLabel(context, 9000, P(1611,286))
-        
-        CGContextRestoreGState(context)
-    }
-    
-    func shape(context:CGContext?, _ shape:Shape, _ color:ConvertibleToNSColor?, lineWidth:CGFloat=1.0) {
-        
-        CGContextSaveGState(context)
-        
-        // shapefile coordinates start bottom left
-        CGContextTranslateCTM(context, 0, CGFloat(self.bounds.size.height))
-        CGContextScaleCTM(context, 1.0, -1.0)
-        
-        // scale and translate according to bbox
-        CGContextScaleCTM(context, CGFloat(scale), CGFloat(scale))
-        CGContextTranslateCTM(context, CGFloat(-self.bbox.x_min), CGFloat(-self.bbox.y_min))
-        
-        for points in shape.partPointsGenerator() {
-            self.polygon(points, lineWidth:lineWidth / CGFloat(scale), fill:color)
-        }
-        
-        CGContextRestoreGState(context)
-    }
-    
-    func drawZipLabel(context:CGContext?, _ zip:Int, _ p:CGPoint) {
-        self.rectangle(R(p.x,p.y,75,32), stroke:"black", fill:colorForZIP(zip))
-        self.text(String(zip), P(p.x+10,p.y+5), font:NSFont(name: "Courier", size: 24)!)
-    }
-}
-
 func drawZIPCodesPDF() {
-    let sr = ShapefileReader(path: "/Users/nst/Desktop/ShapefileReader/data/g2g15.shp")!
+    let sr = ShapefileReader(path: "/Users/nst/Projects/ShapefileReader/data/g2g15.shp")!
     let view = ShapefileView(maxWidth: 2000, maxHeight: 2000, bbox:sr.shp!.bbox, color:"SkyBlue")!
     let pdfData = view.dataWithPDFInsideRect(view.frame)
     let path = "/tmp/switzerland_zip.pdf"
@@ -391,6 +248,6 @@ func drawZIPCodesPDF() {
     }
 }
 
-drawAltitudes()
+//drawAltitudes()
 drawZIPCodes()
-drawZIPCodesPDF()
+//drawZIPCodesPDF()
