@@ -248,6 +248,6 @@ func drawZIPCodesPDF() {
     }
 }
 
-//drawAltitudes()
+drawAltitudes()
 drawZIPCodes()
-//drawZIPCodesPDF()
+drawZIPCodesPDF()
