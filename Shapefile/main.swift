@@ -9,101 +9,15 @@
 import Foundation
 import Cocoa
 
-class BitmapCanvasShapefile : BitmapCanvas {
-    
-    var scale = 1.0
-    var bbox = (x_min:0.0, y_min:0.0, x_max:0.0, y_max:0.0)
-    
-    convenience init?(maxWidth:Int, maxHeight:Int, bbox:(x_min:Double, y_min:Double, x_max:Double, y_max:Double)) {
-        
-        let bbox_w = bbox.x_max - bbox.x_min
-        let bbox_h = bbox.y_max - bbox.y_min
-        
-        let isBboxWiderThanThanHeight = bbox_w > bbox_h
-        
-        let theScale = isBboxWiderThanThanHeight ? (Double(maxWidth) / bbox_w) : (Double(maxHeight) / bbox_h)
-        
-        print("-- scale: \(theScale)")
-        
-        let (w,h) = (Int(bbox_w * theScale), Int(bbox_h * theScale))
-        
-        self.init(w,h,"SkyBlue")
-        
-        self.scale = theScale
-        self.bbox = bbox
-    }
-    
-    func shape(shape:Shape, _ color:ConvertibleToNSColor?, lineWidth:CGFloat=1.0) {
-        
-        CGContextSaveGState(self.cgContext)
-        
-        // shapefile coordinates start bottom left
-        CGContextTranslateCTM(self.cgContext, 0, CGFloat(self.height))
-        CGContextScaleCTM(self.cgContext, 1.0, -1.0)
-        
-        // scale and translate according to bbox
-        CGContextScaleCTM(self.cgContext, CGFloat(scale), CGFloat(scale))
-        CGContextTranslateCTM(self.cgContext, CGFloat(-self.bbox.x_min), CGFloat(-self.bbox.y_min))
-        
-        for points in shape.partPointsGenerator() {
-            self.polygon(points, lineWidth:lineWidth / CGFloat(scale), fill:color)
-        }
-        
-        CGContextRestoreGState(self.cgContext)
-    }
-    
-    func scaleVertical(rect:CGRect, startColor:ConvertibleToNSColor, stopColor:ConvertibleToNSColor, min:Int, max:Int) {
-        // TODO: support horizontal scale
-        // TODO: improve generalisation with more options related to graduations
-        
-        let c1 = startColor.color
-        let c2 = stopColor.color
-        
-        let count = 2
-        let locations : [CGFloat] = [ 1.0, 0.0 ]
-        let components : [CGFloat] = [
-            c1.redComponent, c1.greenComponent, c1.blueComponent, c1.alphaComponent, // start color
-            c2.redComponent, c2.greenComponent, c2.blueComponent, c2.alphaComponent // end color
-        ]
-        
-        let gradient = CGGradientCreateWithColorComponents(CGColorSpaceCreateDeviceRGB(), components, locations, count)
-        
-        CGContextSaveGState(self.cgContext)
-        CGContextAddRect(self.cgContext, rect)
-        CGContextClip(self.cgContext)
-        let startPoint = P(rect.origin.x,rect.origin.y)
-        let endPoint = P(rect.origin.x+rect.size.width, rect.origin.y+rect.size.height)
-        CGContextDrawLinearGradient (self.cgContext, gradient, startPoint, endPoint, [])
-        CGContextRestoreGState(self.cgContext)
-        
-        let delta = max - min
-        for value in min..<max {
-            if value % 500 != 0 { continue }
-            
-            let ratio = Double(value - min) / Double(delta)
-            let y = rect.origin.y + rect.size.height - ratio * rect.size.height
-            
-            self.setAllowsAntialiasing(false)
-            self.lineHorizontal(P(rect.origin.x, y), width: rect.size.width, "black")
-            
-            self.setAllowsAntialiasing(true)
-            self.text("\(value) m", P(rect.origin.x + rect.size.width + 10, y-10), font:NSFont(name: "Helvetica", size: 24)!)
-        }
-        
-        self.setAllowsAntialiasing(false)
-        CGContextStrokeRect(self.cgContext, rect)
-    }
-}
-
 func drawAltitudes() {
     
-    let path = "/Users/nst/Projects/ShapefileReader/data/g1g15.dbf"
+    let path = "/Users/nst/Projects/ShapefileReader/data/g2g15.dbf"
     
     assert(NSFileManager.defaultManager().fileExistsAtPath(path), "update the path of the dbf file according to your project's location")
     
     let sr = ShapefileReader(path:path)!
     
-    let b = BitmapCanvasShapefile(maxWidth: 2000, maxHeight: 2000, bbox:sr.shp!.bbox)!
+    let b = ShapefileBitmap(maxWidth: 2000, maxHeight: 2000, bbox:sr.shp!.bbox, color:"SkyBlue")!
     
     b.rectangle(R(10,10,720,40), stroke: "black", fill: "white")
     
@@ -112,7 +26,7 @@ func drawAltitudes() {
     
     b.setAllowsAntialiasing(false)
     b.text("Generated with ShapefileReader https://github.com/nst/ShapefileReader", P(10,b.height-35))
-    b.text("Data: Federal Statistical Office (FSO), GEOSTAT: g1g15", P(10,b.height-20))
+    b.text("Data: Federal Statistical Office (FSO), GEOSTAT: g2g15", P(10,b.height-20))
     
     b.setAllowsAntialiasing(true)
     
@@ -201,15 +115,15 @@ func colorForZIP(zip:Int) -> NSColor {
     
     let divisor =
     s.hasPrefix("1") ||
-    s.hasPrefix("37") ||
-    s.hasPrefix("38") ||
-    s.hasPrefix("39") ||
-    s.hasPrefix("65") ||
-    s.hasPrefix("66") ||
-    s.hasPrefix("67") ||
-    s.hasPrefix("68") ||
-    s.hasPrefix("69")
-    ? 100 : 1000
+        s.hasPrefix("37") ||
+        s.hasPrefix("38") ||
+        s.hasPrefix("39") ||
+        s.hasPrefix("65") ||
+        s.hasPrefix("66") ||
+        s.hasPrefix("67") ||
+        s.hasPrefix("68") ||
+        s.hasPrefix("69")
+        ? 100 : 1000
     
     var factor = Double(zip % divisor) / Double(divisor)
     factor = min(factor, 0.8)
@@ -228,33 +142,37 @@ func drawZipLabel(b:BitmapCanvas, _ zip:Int, _ p:CGPoint) {
     b.text(String(zip), P(p.x+10,p.y+5), font:NSFont(name: "Courier", size: 24)!)
 }
 
-func drawZIPCodes() {
-    
-    let zipForTownCode = zipForTownCodeDictionary()
-    
+func printZipDistribution(zipForTownCode:[Int:(Int,String)]) {
     var d : [Int:Int] = [:]
-    
+
     print("--", zipForTownCode[4284])
-    
+
     for i in 1...9 {
         d[i] = 0
     }
-    
+
     for (_,(zip,_)) in zipForTownCode {
         let shortZip = zip / 1000
         d[shortZip]? += 1
     }
-    
+
     let a = d.sort {$1.1 < $0.1}
     
     for t in a {
         print(t)
     }
+}
+
+func drawZIPCodes() {
+    
+    let zipForTownCode = zipForTownCodeDictionary()
+    
+    printZipDistribution(zipForTownCode)
     
     // g2g15.shp // communes
     let sr = ShapefileReader(path: "/Users/nst/Desktop/ShapefileReader/data/g2g15.shp")!
     
-    let b = BitmapCanvasShapefile(maxWidth: 2000, maxHeight: 2000, bbox:sr.shp!.bbox)!
+    let b = ShapefileBitmap(maxWidth: 2000, maxHeight: 2000, bbox:sr.shp!.bbox, color:"SkyBlue")!
     
     b.rectangle(R(10,10,665,40), stroke: "black", fill: "white")
     
@@ -326,5 +244,153 @@ func drawZIPCodes() {
     b.save("/tmp/switzerland_zip.png", open: true)
 }
 
+class ShapefileView : CanvasView {
+    
+    var scale = 1.0
+    var bbox = (x_min:0.0, y_min:0.0, x_max:0.0, y_max:0.0)
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    init?(maxWidth:Int, maxHeight:Int, bbox:(x_min:Double, y_min:Double, x_max:Double, y_max:Double), color:ConvertibleToNSColor?) {
+        
+        self.bbox = bbox
+        let bbox_w = bbox.x_max - bbox.x_min
+        let bbox_h = bbox.y_max - bbox.y_min
+        
+        let isBboxWiderThanThanHeight = bbox_w > bbox_h
+        
+        let maxWidth = 2000
+        let maxHeight = 2000
+        
+        self.scale = isBboxWiderThanThanHeight ? (Double(maxWidth) / bbox_w) : (Double(maxHeight) / bbox_h)
+        
+        Swift.print("-- scale: \(scale)")
+        
+        let (w,h) = (bbox_w * scale, bbox_h * scale)
+        
+        super.init(frame: NSMakeRect(0, 0, CGFloat(w), CGFloat(h)))
+    }
+    
+    override func drawRect(dirtyRect: NSRect) {
+        
+        super.drawRect(dirtyRect)
+        
+        let shapefileReader = ShapefileReader(path: "/Users/nst/Desktop/ShapefileReader/data/g2g15.shp")!
+        
+        let context = unsafeBitCast(NSGraphicsContext.currentContext()!.graphicsPort, CGContextRef.self)
+        
+        CGContextSaveGState(context)
+        
+        // makes coordinates start upper left
+        CGContextTranslateCTM(context, 0, CGFloat(self.bounds.height))
+        CGContextScaleCTM(context, 1.0, -1.0)
+        
+        "skyBlue".color.setFill()
+        NSBezierPath.fillRect(dirtyRect)
+        
+        let zipForTownCode = zipForTownCodeDictionary()
+        
+        self.rectangle(R(10,10,665,40), stroke: "black", fill: "white")
+        
+        self.text("ZIP codes of the 2328 swiss towns, 2015", P(15,15), font:NSFont(name: "Helvetica", size: 36)!)
+        
+        self.text("Generated with ShapefileReader https://github.com/nst/ShapefileReader", P(10,self.bounds.height-35))
+        self.text("Data: Federal Statistical Office (FSO), GEOSTAT: g2g15, g1k15", P(10,self.bounds.height-20))
+        
+        for (shape, record) in shapefileReader.shapeAndRecordGenerator() {
+            //print(record)
+            let n = record[0] as! Int
+            
+            var color = "black".color
+            if let (zip, _) = zipForTownCode[n] {
+                color = colorForZIP(zip)
+            } else {
+                Swift.print("-- cannot find zip for town \(record)")
+            }
+            
+            self.shape(context, shape, color, lineWidth: 0.5)
+        }
+        
+        // g1k15.shp // cantons
+        let src = ShapefileReader(path: "/Users/nst/Desktop/ShapefileReader/data/g1k15.shp")!
+        
+        for shape in src.shp.shapeGenerator() {
+            self.shape(context, shape, NSColor.clearColor(), lineWidth: 1.5)
+        }
+        
+        // ZIP labels
+        
+        drawZipLabel(context, 1000, P(265,841))
+        drawZipLabel(context, 1100, P(166,865))
+        drawZipLabel(context, 1200, P(122,1044))
+        drawZipLabel(context, 1300, P(88,670))
+        drawZipLabel(context, 1400, P(132,617))
+        drawZipLabel(context, 1500, P(395,635))
+        drawZipLabel(context, 1600, P(469,778))
+        drawZipLabel(context, 1700, P(531,663))
+        drawZipLabel(context, 1800, P(299,971))
+        drawZipLabel(context, 1900, P(365,1162))
+        
+        drawZipLabel(context, 2000, P(285,414))
+        drawZipLabel(context, 3000, P(640,535))
+        drawZipLabel(context, 3700, P(676,789))
+        drawZipLabel(context, 3800, P(918,745))
+        drawZipLabel(context, 3900, P(939,1100))
+        
+        drawZipLabel(context, 4000, P(641,111))
+        drawZipLabel(context, 5000, P(904,97))
+        drawZipLabel(context, 6000, P(969,535))
+        drawZipLabel(context, 6500, P(1484,964))
+        drawZipLabel(context, 6600, P(1062,1024))
+        drawZipLabel(context, 6700, P(1262,819))
+        drawZipLabel(context, 6800, P(1410,1210))
+        drawZipLabel(context, 6900, P(1405,1094))
+        
+        drawZipLabel(context, 7000, P(1752,513))
+        drawZipLabel(context, 8000, P(1293,47))
+        drawZipLabel(context, 9000, P(1611,286))
+        
+        CGContextRestoreGState(context)
+    }
+    
+    func shape(context:CGContext?, _ shape:Shape, _ color:ConvertibleToNSColor?, lineWidth:CGFloat=1.0) {
+        
+        CGContextSaveGState(context)
+        
+        // shapefile coordinates start bottom left
+        CGContextTranslateCTM(context, 0, CGFloat(self.bounds.size.height))
+        CGContextScaleCTM(context, 1.0, -1.0)
+        
+        // scale and translate according to bbox
+        CGContextScaleCTM(context, CGFloat(scale), CGFloat(scale))
+        CGContextTranslateCTM(context, CGFloat(-self.bbox.x_min), CGFloat(-self.bbox.y_min))
+        
+        for points in shape.partPointsGenerator() {
+            self.polygon(points, lineWidth:lineWidth / CGFloat(scale), fill:color)
+        }
+        
+        CGContextRestoreGState(context)
+    }
+    
+    func drawZipLabel(context:CGContext?, _ zip:Int, _ p:CGPoint) {
+        self.rectangle(R(p.x,p.y,75,32), stroke:"black", fill:colorForZIP(zip))
+        self.text(String(zip), P(p.x+10,p.y+5), font:NSFont(name: "Courier", size: 24)!)
+    }
+}
+
+func drawZIPCodesPDF() {
+    let sr = ShapefileReader(path: "/Users/nst/Desktop/ShapefileReader/data/g2g15.shp")!
+    let view = ShapefileView(maxWidth: 2000, maxHeight: 2000, bbox:sr.shp!.bbox, color:"SkyBlue")!
+    let pdfData = view.dataWithPDFInsideRect(view.frame)
+    let path = "/tmp/switzerland_zip.pdf"
+    let success = pdfData.writeToFile(path, atomically: true)
+    if success {
+        NSWorkspace.sharedWorkspace().openFile(path)
+    }
+}
+
 drawAltitudes()
 drawZIPCodes()
+drawZIPCodesPDF()

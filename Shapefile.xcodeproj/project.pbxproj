@@ -24,6 +24,8 @@
 		035D10191C9E1FFA00BC89C8 /* Kantone.shp.xml in Resources */ = {isa = PBXBuildFile; fileRef = 035D10121C9E1FFA00BC89C8 /* Kantone.shp.xml */; };
 		035D101A1C9E1FFA00BC89C8 /* Kantone.shx in Resources */ = {isa = PBXBuildFile; fileRef = 035D10131C9E1FFA00BC89C8 /* Kantone.shx */; };
 		035D101B1C9E208F00BC89C8 /* Shapefile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035D0FFE1C9E1EB200BC89C8 /* Shapefile.swift */; };
+		03B7088A1CA5F08700F3B3A0 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B708891CA5F08700F3B3A0 /* CanvasView.swift */; };
+		03B7088C1CA5F6D200F3B3A0 /* ShapefileBitmap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B7088B1CA5F6D200F3B3A0 /* ShapefileBitmap.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -65,6 +67,8 @@
 		035D10131C9E1FFA00BC89C8 /* Kantone.shx */ = {isa = PBXFileReference; lastKnownFileType = file; path = Kantone.shx; sourceTree = "<group>"; };
 		03B708871CA5AEE700F3B3A0 /* data_sources.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = data_sources.txt; sourceTree = "<group>"; };
 		03B708881CA5B1A000F3B3A0 /* plz_p1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = plz_p1.txt; sourceTree = "<group>"; };
+		03B708891CA5F08700F3B3A0 /* CanvasView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CanvasView.swift; path = ../vendor/CanvasView.swift; sourceTree = "<group>"; };
+		03B7088B1CA5F6D200F3B3A0 /* ShapefileBitmap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShapefileBitmap.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +121,7 @@
 				0344B4DD1C9EEAFF001DCDAB /* README.md */,
 				0344B4E81C9EFB28001DCDAB /* data */,
 				0344B4DE1C9EFB02001DCDAB /* vendor */,
+				03B708911CA60CF800F3B3A0 /* viewers */,
 				035D0FF01C9E1EA200BC89C8 /* Shapefile */,
 				035D10051C9E1FB200BC89C8 /* ShapefileTests */,
 				035D0FEF1C9E1EA200BC89C8 /* Products */,
@@ -163,6 +168,16 @@
 				035D10131C9E1FFA00BC89C8 /* Kantone.shx */,
 			);
 			path = Kantone;
+			sourceTree = "<group>";
+		};
+		03B708911CA60CF800F3B3A0 /* viewers */ = {
+			isa = PBXGroup;
+			children = (
+				03B7088B1CA5F6D200F3B3A0 /* ShapefileBitmap.swift */,
+				03B708891CA5F08700F3B3A0 /* CanvasView.swift */,
+			);
+			name = viewers;
+			path = Shapefile;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -264,6 +279,8 @@
 				0344B4E21C9EFB02001DCDAB /* BinUtils.swift in Sources */,
 				0344B4E61C9EFB02001DCDAB /* X11Colors.swift in Sources */,
 				0344B4E41C9EFB02001DCDAB /* BitmapCanvas.swift in Sources */,
+				03B7088A1CA5F08700F3B3A0 /* CanvasView.swift in Sources */,
+				03B7088C1CA5F6D200F3B3A0 /* ShapefileBitmap.swift in Sources */,
 				035D0FF21C9E1EA200BC89C8 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -8,14 +8,6 @@
 
 import Cocoa
 
-var Crayons = NSColorList(named: "Crayons")!
-
-extension NSColorList {
-    subscript (key:String) -> NSColor {
-        return self.colorWithKey(key)!
-    }
-}
-
 infix operator * { associativity right precedence 155 }
 
 func *(left:CGFloat, right:Int) -> CGFloat
