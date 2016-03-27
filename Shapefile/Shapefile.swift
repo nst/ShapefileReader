@@ -423,7 +423,7 @@ class SHPReader {
         
         if shapeType.hasSinglePoint {
             let point = unpack("<2d", f.readDataOfLength(16)).map({ $0 as! Double })
-            record.points = [NSMakePoint(CGFloat(point[0]),CGFloat(point[1]))]
+            record.points = [CGPointMake(CGFloat(point[0]),CGFloat(point[1]))]
         }
         
         if shapeType.hasSingleZ {
