@@ -11,6 +11,7 @@
 // https://raw.githubusercontent.com/GeospatialPython/pyshp/master/shapefile.py
 
 import Foundation
+import CoreGraphics
 
 enum ShapeType : Int {
     case NullShape = 0
