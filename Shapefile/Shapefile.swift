@@ -104,6 +104,8 @@ class DBFReader {
     
     var fileHandle : NSFileHandle!
     var numberOfRecords : Int!
+    var fileType : Int!
+    var lastUpdate : String! // YYYY-MM-DD
     var fields : [[AnyObject]]!
     var headerLength : Int!
     var recordLengthFromHeader : Int!
@@ -132,11 +134,20 @@ class DBFReader {
         
         f.seekToFileOffset(0)
         
-        let a = unpack("<xxxxIHH20x", f.readDataOfLength(32))
+        let a = unpack("<BBBBIHH20x", f.readDataOfLength(32))
         
-        self.numberOfRecords = a[0] as! Int
-        self.headerLength = a[1] as! Int
-        self.recordLengthFromHeader = a[2] as! Int
+        self.fileType = a[0] as! Int
+        let YY = a[1] as! Int
+        let MM = a[2] as! Int
+        let DD = a[3] as! Int
+        self.lastUpdate = "\(1900+YY)-\(String(format: "%02d", MM))-\(String(format: "%02d", DD))"
+        self.numberOfRecords = a[4] as! Int
+        self.headerLength = a[5] as! Int
+        self.recordLengthFromHeader = a[6] as! Int
+        
+        print("-- fileType:", fileType)
+        print("-- lastUpdate:", lastUpdate)
+        print("-- numberOfRecords:", numberOfRecords)
         
         let numFields = (headerLength - 33) / 32
         
