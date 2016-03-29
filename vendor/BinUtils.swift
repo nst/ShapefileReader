@@ -101,7 +101,7 @@ func unpack(var format:String, _ data:NSData) -> [AnyObject] {
     - 'p' and 'P' format are unsupported
     - the format does not have to match with the exact quantity of data provided
     */
-
+    
     assert(Int(OSHostByteOrder()) == OSLittleEndian, "\(__FILE__) assumes little endian, but host is big endian")
     
     if let firstChar = format.characters.first {
@@ -139,11 +139,11 @@ func unpack(var format:String, _ data:NSData) -> [AnyObject] {
                 assertionFailure("-- not a string: \(sub)")
                 return []
             }
-
+            
             a.append(s)
-
+            
             loc += length
-
+            
             n = 0
             
             continue
