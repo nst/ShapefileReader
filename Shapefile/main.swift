@@ -80,36 +80,101 @@ func zipForTownCodeDictionary() -> [Int:(Int,String)] {
     return d
 }
 
+func paletteForColorNumber(n:Int) -> (NSColor, NSColor, NSColor) {
+    assert(0...3 ~= n)
+    
+    switch(n) {
+    case 0:
+        return ("LightPink".color, "PaleVioletRed".color, "Maroon".color)
+    case 1:
+        return ("SeaGreen4".color, "SeaGreen3".color, "SeaGreen1".color)
+    case 2:
+        return ("GoldenRod4".color, "GoldenRod3".color, "GoldenRod1".color)
+    case 3:
+        return ("SkyBlue4".color, "SkyBlue3".color, "SkyBlue1".color)
+    default:
+        assertionFailure()
+    }
+    
+    return ("black".color, "black".color, "black".color)
+}
 
 func colorForZIP(zip:Int) -> NSColor {
     
-    var color = "black".color
+    var color : NSColor
     
     let s = String(zip)
     
-    if s.hasPrefix("1") { color = "orchid".color } else
-    if s.hasPrefix("2") { color = "forestGreen".color } else
-    if s.hasPrefix("3") { color = "chocolate".color } else
-    if s.hasPrefix("4") { color = "gold".color } else
-    if s.hasPrefix("5") { color = "forestGreen".color } else
-    if s.hasPrefix("6") { color = "orchid".color } else
-    if s.hasPrefix("7") { color = "forestGreen".color } else
-    if s.hasPrefix("8") { color = "gold".color } else
-    if s.hasPrefix("9") { color = "orchid".color }
-    
-    let factor = Double(zip % 1000) / 1000.0
+    switch((s as NSString).substringToIndex(2)) {
+    case "10", "12", "17", "19":
+        color = paletteForColorNumber(0).0
+    case "11", "14", "16":
+        color = paletteForColorNumber(0).1
+    case "13", "15", "18":
+        color = paletteForColorNumber(0).2
+    case "20", "23", "26", "29":
+        color = paletteForColorNumber(1).0
+    case "21", "24", "27":
+        color = paletteForColorNumber(1).1
+    case "22", "25", "28":
+        color = paletteForColorNumber(1).2
+    case "30", "33", "36", "39":
+        color = paletteForColorNumber(2).0
+    case "31", "34", "37":
+        color = paletteForColorNumber(2).1
+    case "32", "35", "38":
+        color = paletteForColorNumber(2).2
+    case "40", "43", "46", "49":
+        color = paletteForColorNumber(0).0
+    case "41", "44", "47":
+        color = paletteForColorNumber(0).1
+    case "42", "45", "48":
+        color = paletteForColorNumber(0).2
+    case "50", "53", "56", "59":
+        color = paletteForColorNumber(2).0
+    case "51", "54", "57":
+        color = paletteForColorNumber(2).1
+    case "52", "55", "58":
+        color = paletteForColorNumber(2).2
+    case "60", "63", "66", "69":
+        color = paletteForColorNumber(1).0
+    case "61", "64", "67":
+        color = paletteForColorNumber(1).1
+    case "62", "65", "68":
+        color = paletteForColorNumber(1).2
+    case "70", "73", "76", "79":
+        color = paletteForColorNumber(2).0
+    case "71", "74", "77":
+        color = paletteForColorNumber(2).1
+    case "72", "75", "78":
+        color = paletteForColorNumber(2).2
+    case "80", "83", "86", "89":
+        color = paletteForColorNumber(0).0
+    case "81", "84", "87":
+        color = paletteForColorNumber(0).1
+    case "82", "85", "88":
+        color = paletteForColorNumber(0).2
+    case "90", "93", "96", "99":
+        color = paletteForColorNumber(1).0
+    case "91", "94", "97":
+        color = paletteForColorNumber(1).1
+    case "92", "95", "98":
+        color = paletteForColorNumber(1).2
+    default:
+        color = "black".color
+    }
     
     let (r,g,b) = (color.redComponent, color.greenComponent, color.blueComponent)
     
-    let r2 : CGFloat = r + (0.8 - r/2.0) * factor*0.8
-    let g2 : CGFloat = g + (0.8 - g/2.0) * factor*0.8
-    let b2 : CGFloat = b + (0.8 - b/2.0) * factor*0.8
-
-//    let r2 : CGFloat = r + (1.0 - r) * factor*0.85
-//    let g2 : CGFloat = g + (1.0 - g) * factor*0.85
-//    let b2 : CGFloat = b + (1.0 - b) * factor*0.85
-
-    return NSColor(calibratedRed:r2, green:g2, blue:b2, alpha:1.0)
+    //    let r2 : CGFloat = r + (0.8 - r/2.0) * factor*0.8
+    //    let g2 : CGFloat = g + (0.8 - g/2.0) * factor*0.8
+    //    let b2 : CGFloat = b + (0.8 - b/2.0) * factor*0.8
+    
+    //    let r2 : CGFloat = r + (1.0 - r) * factor*0.85
+    //    let g2 : CGFloat = g + (1.0 - g) * factor*0.85
+    //    let b2 : CGFloat = b + (1.0 - b) * factor*0.85
+    
+    return NSColor(calibratedRed:r, green:g, blue:b, alpha:1.0)
 }
 
 func drawZipLabel(b:BitmapCanvas, _ zip:Int, _ p:CGPoint, _ name:String?=nil) {
@@ -128,22 +193,27 @@ func drawZipLabel(b:BitmapCanvas, _ zip:Int, _ p:CGPoint, _ name:String?=nil) {
 
 func printZipDistribution(zipForTownCode:[Int:(Int,String)]) {
     var d : [Int:Int] = [:]
-
+    
     print("--", zipForTownCode[4284])
-
+    
     for i in 1...9 {
-        d[i] = 0
+        for j in 0...9 {
+            let n = i*10 + j
+            d[n] = 0
+        }
     }
-
+    
     for (_,(zip,_)) in zipForTownCode {
-        let shortZip = zip / 1000
+        let shortZip = zip / 100
         d[shortZip]? += 1
     }
-
-    let a = d.sort {$1.1 < $0.1}
+    
+    let a = d.sort {$1.0 < $0.0}
     
     for t in a {
-        print(t)
+        if t.1 != 0 {
+            print(t)
+        }
     }
 }
 
@@ -175,7 +245,7 @@ func drawZIPCodes() {
         var color = "black".color
         if let (zip, _) = zipForTownCode[n] {
             //if zip != 1950 { continue }
-
+            
             color = colorForZIP(zip)
         } else {
             print("-- cannot find zip for town \(record)")
@@ -213,7 +283,7 @@ func drawZIPCodes() {
     drawZipLabel(b, 3900, P(899,974), "Brig")
     
     drawZipLabel(b, 4000, P(641,111), "Basel")
-
+    
     drawZipLabel(b, 5000, P(920,223), "Aarau")
     
     drawZipLabel(b, 6000, P(1009,503), "Luzern")
@@ -226,7 +296,7 @@ func drawZIPCodes() {
     
     drawZipLabel(b, 7000, P(1582,595), "Chur")
     drawZipLabel(b, 7500, P(1703,721), "St. Moritz")
-
+    
     drawZipLabel(b, 8000, P(1128,250), "Zürich")
     drawZipLabel(b, 8200, P(1167,47), "Schaffhausen")
     drawZipLabel(b, 8400, P(1219,185), "Winterthur")
