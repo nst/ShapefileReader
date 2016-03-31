@@ -82,7 +82,7 @@ class Shape {
         
         var i = 0
         
-        return anyGenerator {
+        return AnyGenerator {
             if self.shapeType.hasParts == false { return nil }
             
             if i == indices.count - 1 { return nil }
@@ -254,7 +254,7 @@ class DBFReader {
     func recordGenerator() -> AnyGenerator<DBFRecord> {
         
         guard let n = self.numberOfRecords else {
-            return anyGenerator {
+            return AnyGenerator {
                 print("-- unknown number of records")
                 return nil
             }
@@ -262,7 +262,7 @@ class DBFReader {
         
         var i = 0
         
-        return anyGenerator {
+        return AnyGenerator {
             if i >= n { return nil}
             let rec = self.recordAtIndex(i)
             i += 1
@@ -455,7 +455,7 @@ class SHPReader {
         
         var nextIndex : UInt64 = 100
         
-        return anyGenerator {
+        return AnyGenerator {
             if let (next, shape) = self.shapeAtOffset(nextIndex) {
                 nextIndex = next
                 return shape
@@ -592,7 +592,7 @@ class ShapefileReader {
         
         var i = 0
         
-        return anyGenerator {
+        return AnyGenerator {
             guard let s = self[i] else { return nil }
             guard let r = self.dbf?[i] else { return nil }
             i += 1

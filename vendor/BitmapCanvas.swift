@@ -393,7 +393,7 @@ class BitmapCanvas {
     
     func save(path:String, open:Bool=false) -> Bool {
         guard let data = bitmapImageRep.representationUsingType(.NSPNGFileType, properties: [:]) else {
-            print("\(__FILE__) \(__FUNCTION__) cannot get PNG data from bitmap")
+            print("\(#file) \(#function) cannot get PNG data from bitmap")
             return false
         }
         let success = data.writeToFile(path, atomically: false)
@@ -418,17 +418,17 @@ class BitmapCanvas {
     func image(fromPath path:String, _ p:NSPoint) {
         
         guard let data = NSData(contentsOfFile:path) else {
-            print("\(__FILE__) \(__FUNCTION__) cannot read data at \(path)");
+            print("\(#file) \(#function) cannot read data at \(path)");
             return
         }
         
         guard let imgRep = NSBitmapImageRep(data: data) else {
-            print("\(__FILE__) \(__FUNCTION__) cannot create bitmap image rep from data at \(path)");
+            print("\(#file) \(#function) cannot create bitmap image rep from data at \(path)");
             return
         }
         
         guard let cgImage = imgRep.CGImage else {
-            print("\(__FILE__) \(__FUNCTION__) cannot get cgImage out of imageRep from \(path)");
+            print("\(#file) \(#function) cannot get cgImage out of imageRep from \(path)");
             return
         }
         
