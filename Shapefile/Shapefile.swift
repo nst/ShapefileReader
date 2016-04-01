@@ -13,6 +13,8 @@
 import Foundation
 import CoreGraphics
 
+typealias MapPoint = CGPoint
+
 enum ShapeType : Int {
     case NullShape = 0
     case Point = 1
@@ -68,14 +70,14 @@ class Shape {
     }
     
     var shapeType : ShapeType
-    var points : [CGPoint] = []
+    var points : [MapPoint] = []
     var bbox : (x_min:Double, y_min:Double, x_max:Double, y_max:Double) = (0.0,0.0,0.0,0.0)
     var parts : [Int] = []
     var partTypes : [Int] = []
     var z : Double = 0.0
     var m : [Double?] = []
     
-    func partPointsGenerator() -> AnyGenerator<[CGPoint]> {
+    func partPointsGenerator() -> AnyGenerator<[MapPoint]> {
         
         var indices = Array(self.parts)
         indices.append(self.points.count-1)
@@ -400,7 +402,7 @@ class SHPReader {
             record.partTypes = unpack("<\(nParts)i", f.readDataOfLength(nParts * 4)).map({ $0 as! Int })
         }
         
-        var recPoints : [CGPoint] = []
+        var recPoints : [MapPoint] = []
         for _ in 0..<nPoints {
             let points = unpack("<2d", f.readDataOfLength(16)).map({ $0 as! Double })
             recPoints.append(CGPointMake(CGFloat(points[0]),CGFloat(points[1])))
