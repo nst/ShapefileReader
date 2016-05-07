@@ -101,6 +101,10 @@ class Shape {
 class DBFReader {
     // dBase III+ specs http://www.oocities.org/geoff_wass/dBASE/GaryWhite/dBASE/FAQ/qformt.htm#A
     // extended with dBase IV 2.0 'F' type
+
+    enum Errors: ErrorType {
+        case CannotReadFile(path:String)
+    }
     
     typealias DBFRecord = [AnyObject]
     
@@ -113,13 +117,8 @@ class DBFReader {
     var recordLengthFromHeader : Int!
     var recordFormat : String!
     
-    init?(path:String) {
-        guard let f = NSFileHandle(forReadingAtPath: path) else {
-            print("-- cannot open .dbf for reading at \(path)")
-            return nil
-        }
-        
-        self.fileHandle = f
+    init(path:String) throws {
+        self.fileHandle = try NSFileHandle(forReadingFromURL: NSURL(fileURLWithPath: path))
         self.readHeader()
     }
     
@@ -309,13 +308,8 @@ class SHPReader {
     var measure : (m_min:Double, m_max:Double) = (0.0, 0.0)
     var shpLength : UInt64 = 0
     
-    init?(path:String) {
-        guard let f = NSFileHandle(forReadingAtPath: path) else {
-            print("-- cannot open .shp for reading at \(path)")
-            return nil
-        }
-        
-        self.fileHandle = f
+    init(path:String) throws {
+        self.fileHandle = try NSFileHandle(forReadingFromURL: NSURL(fileURLWithPath: path))
         self.readHeader()
     }
     
@@ -496,13 +490,8 @@ class SHXReader {
         return shapeOffsets.count
     }
     
-    init?(path:String) {
-        guard let f = NSFileHandle(forReadingAtPath: path) else {
-            return nil
-        }
-        
-        self.fileHandle = f
-        
+    init(path:String) throws {
+        self.fileHandle = try NSFileHandle(forReadingFromURL: NSURL(fileURLWithPath: path))
         self.shapeOffsets = self.readOffsets()
     }
     
@@ -563,17 +552,13 @@ class ShapefileReader {
     
     var shapeName : String
     
-    init?(path:String) {
+    init(path:String) throws {
         
         self.shapeName = (path as NSString).stringByDeletingPathExtension
-        
-        guard let existingSHPReader = SHPReader(path: "\(shapeName).shp") else {
-            return nil
-        }
-        
-        self.shp = existingSHPReader
-        self.dbf = DBFReader(path: "\(shapeName).dbf")
-        self.shx = SHXReader(path: "\(shapeName).shx")
+
+        self.shp = try SHPReader(path: "\(shapeName).shp")
+        self.dbf = try DBFReader(path: "\(shapeName).dbf")
+        self.shx = try SHXReader(path: "\(shapeName).shx")
     }
     
     subscript(i:Int) -> Shape? {

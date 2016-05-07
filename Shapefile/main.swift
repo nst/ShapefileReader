@@ -9,13 +9,13 @@
 import Foundation
 import Cocoa
 
-func drawAltitudes() {
+func drawAltitudes() throws {
     
     let path = "/Users/nst/Projects/ShapefileReader/data/g2g15.dbf"
     
     assert(NSFileManager.defaultManager().fileExistsAtPath(path), "update the path of the dbf file according to your project's location")
     
-    let sr = ShapefileReader(path:path)!
+    let sr = try ShapefileReader(path:path)
     
     let b = ShapefileBitmap(maxWidth: 2000, maxHeight: 2000, bbox:sr.shp!.bbox, color:"SkyBlue")!
     
@@ -217,14 +217,14 @@ func printZipDistribution(zipForTownCode:[Int:(Int,String)]) {
     }
 }
 
-func drawZIPCodes() {
+func drawZIPCodes() throws {
     
     let zipForTownCode = zipForTownCodeDictionary()
     
     printZipDistribution(zipForTownCode)
     
     // g2g15.shp // communes
-    let sr = ShapefileReader(path: "/Users/nst/Projects/ShapefileReader/data/g2g15.shp")!
+    let sr = try ShapefileReader(path: "/Users/nst/Projects/ShapefileReader/data/g2g15.shp")
     
     let b = ShapefileBitmap(maxWidth: 2000, maxHeight: 2000, bbox:sr.shp!.bbox, color:"SkyBlue")!
     
@@ -255,7 +255,7 @@ func drawZIPCodes() {
     }
     
     // g1k15.shp // cantons
-    let src = ShapefileReader(path: "/Users/nst/Projects/ShapefileReader/data/g1k15.shp")!
+    let src = try ShapefileReader(path: "/Users/nst/Projects/ShapefileReader/data/g1k15.shp")
     
     for shape in src.shp.shapeGenerator() {
         b.shape(shape, NSColor.clearColor(), lineWidth: 1.5)
@@ -307,8 +307,8 @@ func drawZIPCodes() {
     b.save("/tmp/switzerland_zip.png", open: true)
 }
 
-func drawZIPCodesPDF() {
-    let sr = ShapefileReader(path: "/Users/nst/Projects/ShapefileReader/data/g2g15.shp")!
+func drawZIPCodesPDF() throws {
+    let sr = try ShapefileReader(path: "/Users/nst/Projects/ShapefileReader/data/g2g15.shp")
     let view = ShapefileView(maxWidth: 2000, maxHeight: 2000, bbox:sr.shp!.bbox, color:"SkyBlue")!
     let pdfData = view.dataWithPDFInsideRect(view.frame)
     let path = "/tmp/switzerland_zip.pdf"
@@ -318,6 +318,6 @@ func drawZIPCodesPDF() {
     }
 }
 
-drawAltitudes()
-drawZIPCodes()
-drawZIPCodesPDF()
+//drawAltitudes()
+try! drawZIPCodes()
+try! drawZIPCodesPDF()
