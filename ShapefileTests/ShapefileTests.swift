@@ -25,7 +25,7 @@ class ShapefileTests: XCTestCase {
     func testRecords() {
         let path = NSBundle(forClass: self.dynamicType).pathForResource("Kantone", ofType: "shp")!
         
-        let sr = ShapefileReader(path:path)!
+        let sr = try! ShapefileReader(path:path)
 
         XCTAssertEqual(sr.dbf!.numberOfRecords, 26)
 
@@ -35,13 +35,13 @@ class ShapefileTests: XCTestCase {
         let rec = sr.dbf!.recordAtIndex(1)
         XCTAssertEqual(rec[1] as? String, "BE")
 
-        print("\(__FUNCTION__) pass")
+        print("\(#function) pass")
     }
 
     func testShapes() {
         let path = NSBundle(forClass: self.dynamicType).pathForResource("Kantone", ofType: "shp")!
         
-        let sr = ShapefileReader(path:path)!
+        let sr = try! ShapefileReader(path:path)
 
         let shapes = sr.shp!.allShapes()
         XCTAssertEqual(shapes.count, 26)
@@ -58,7 +58,7 @@ class ShapefileTests: XCTestCase {
     func testShx() {
         let path = NSBundle(forClass: self.dynamicType).pathForResource("Kantone", ofType: "shp")!
         
-        let sr = ShapefileReader(path:path)!
+        let sr = try! ShapefileReader(path:path)
 
         let offset = sr.shx!.shapeOffsetAtIndex(2)!
         let (_, shape2_) = sr.shp!.shapeAtOffset(UInt64(offset))!
