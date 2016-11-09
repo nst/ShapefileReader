@@ -37,22 +37,22 @@ class ShapefileView : CanvasView {
         super.init(frame: NSMakeRect(0, 0, CGFloat(w), CGFloat(h)))
     }
     
-    override func drawRect(dirtyRect: NSRect) {
+    override func draw(_ dirtyRect: NSRect) {
         
-        super.drawRect(dirtyRect)
+        super.draw(dirtyRect)
         
         let shapefileReader = try! ShapefileReader(path: "/Users/nst/Projects/ShapefileReader/data/g2g15.shp")
         
-        let context = unsafeBitCast(NSGraphicsContext.currentContext()!.graphicsPort, CGContextRef.self)
+        let context = unsafeBitCast(NSGraphicsContext.current()!.graphicsPort, to: CGContext.self)
         
-        CGContextSaveGState(context)
+        context.saveGState()
         
         // makes coordinates start upper left
-        CGContextTranslateCTM(context, 0, CGFloat(self.bounds.height))
-        CGContextScaleCTM(context, 1.0, -1.0)
+        context.translateBy(x: 0, y: CGFloat(self.bounds.height))
+        context.scaleBy(x: 1.0, y: -1.0)
         
         "skyBlue".color.setFill()
-        NSBezierPath.fillRect(dirtyRect)
+        NSBezierPath.fill(dirtyRect)
         
         let zipForTownCode = zipForTownCodeDictionary()
         
@@ -81,7 +81,7 @@ class ShapefileView : CanvasView {
         let src = try! ShapefileReader(path: "/Users/nst/Projects/ShapefileReader/data/g1k15.shp")
         
         for shape in src.shp.shapeGenerator() {
-            self.shape(context, shape, NSColor.clearColor(), lineWidth: 1.5)
+            self.shape(context, shape, NSColor.clear, lineWidth: 1.5)
         }
         
         // ZIP labels
@@ -116,29 +116,29 @@ class ShapefileView : CanvasView {
         drawZipLabel(context, 8000, P(1293,47))
         drawZipLabel(context, 9000, P(1611,286))
         
-        CGContextRestoreGState(context)
+        context.restoreGState()
     }
     
-    func shape(context:CGContext?, _ shape:Shape, _ color:ConvertibleToNSColor?, lineWidth:CGFloat=1.0) {
+    func shape(_ context:CGContext?, _ shape:Shape, _ color:ConvertibleToNSColor?, lineWidth:CGFloat=1.0) {
         
-        CGContextSaveGState(context)
+        context?.saveGState()
         
         // shapefile coordinates start bottom left
-        CGContextTranslateCTM(context, 0, CGFloat(self.bounds.size.height))
-        CGContextScaleCTM(context, 1.0, -1.0)
+        context?.translateBy(x: 0, y: CGFloat(self.bounds.size.height))
+        context?.scaleBy(x: 1.0, y: -1.0)
         
         // scale and translate according to bbox
-        CGContextScaleCTM(context, CGFloat(scale), CGFloat(scale))
-        CGContextTranslateCTM(context, CGFloat(-self.bbox.x_min), CGFloat(-self.bbox.y_min))
+        context?.scaleBy(x: CGFloat(scale), y: CGFloat(scale))
+        context?.translateBy(x: CGFloat(-self.bbox.x_min), y: CGFloat(-self.bbox.y_min))
         
         for points in shape.partPointsGenerator() {
             self.polygon(points, lineWidth:lineWidth / CGFloat(scale), fill:color)
         }
         
-        CGContextRestoreGState(context)
+        context?.restoreGState()
     }
     
-    func drawZipLabel(context:CGContext?, _ zip:Int, _ p:CGPoint) {
+    func drawZipLabel(_ context:CGContext?, _ zip:Int, _ p:CGPoint) {
         self.rectangle(R(p.x,p.y,75,32), stroke:"black", fill:colorForZIP(zip))
         self.text(String(zip), P(p.x+10,p.y+5), font:NSFont(name: "Courier", size: 24)!)
     }

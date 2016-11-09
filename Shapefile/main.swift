@@ -13,7 +13,7 @@ func drawAltitudes() throws {
     
     let path = "/Users/nst/Projects/ShapefileReader/data/g2g15.dbf"
     
-    assert(NSFileManager.defaultManager().fileExistsAtPath(path), "update the path of the dbf file according to your project's location")
+    assert(FileManager.default.fileExists(atPath: path), "update the path of the dbf file according to your project's location")
     
     let sr = try ShapefileReader(path:path)
     
@@ -35,9 +35,9 @@ func drawAltitudes() throws {
     
     assert(sr.dbf!.numberOfRecords == sr.shx!.numberOfShapes)
     
-    let altitudes = sr.dbf!.recordGenerator().map{ $0[15] as! Int }
-    let alt_min = altitudes.minElement()!
-    let alt_max = altitudes.maxElement()!
+    let altitudes = try! sr.dbf!.recordGenerator().map{ $0[15] as! Int }
+    let alt_min = altitudes.min()!
+    let alt_max = altitudes.max()!
     
     /**/
     
@@ -62,12 +62,12 @@ func zipForTownCodeDictionary() -> [Int:(Int,String)] {
     // http://www.taed.ch/dl/plz_p1.txt
     let path = "/Users/nst/Projects/ShapefileReader/data/plz_p1.txt"
     
-    let s = try! NSString(contentsOfFile: path, encoding: NSUTF8StringEncoding)
+    let s = try! NSString(contentsOfFile: path, encoding: String.Encoding.utf8.rawValue)
     
     var d : [Int:(Int,String)] = [:]
     
-    s.enumerateLinesUsingBlock { (s, stopPtr) -> Void in
-        let comps = s.componentsSeparatedByString("\t")
+    s.enumerateLines { (s, stopPtr) -> Void in
+        let comps = s.components(separatedBy: "\t")
         let zip = Int(String(comps[2]))!
         let name = comps[5]
         let n = Int(String(comps[11]))!
@@ -80,7 +80,7 @@ func zipForTownCodeDictionary() -> [Int:(Int,String)] {
     return d
 }
 
-func paletteForColorNumber(n:Int) -> (NSColor, NSColor, NSColor) {
+func paletteForColorNumber(_ n:Int) -> (NSColor, NSColor, NSColor) {
     assert(0...3 ~= n)
     
     switch(n) {
@@ -99,13 +99,13 @@ func paletteForColorNumber(n:Int) -> (NSColor, NSColor, NSColor) {
     return ("black".color, "black".color, "black".color)
 }
 
-func colorForZIP(zip:Int) -> NSColor {
+func colorForZIP(_ zip:Int) -> NSColor {
     
     var color : NSColor
     
     let s = String(zip)
     
-    switch((s as NSString).substringToIndex(2)) {
+    switch((s as NSString).substring(to: 2)) {
     case "10", "12", "17", "19":
         color = paletteForColorNumber(0).0
     case "11", "14", "16":
@@ -177,7 +177,7 @@ func colorForZIP(zip:Int) -> NSColor {
     return NSColor(calibratedRed:r, green:g, blue:b, alpha:1.0)
 }
 
-func drawZipLabel(b:BitmapCanvas, _ zip:Int, _ p:CGPoint, _ name:String?=nil) {
+func drawZipLabel(_ b:BitmapCanvas, _ zip:Int, _ p:CGPoint, _ name:String?=nil) {
     var s = String(zip)
     if let n = name {
         s += " \(n)"
@@ -185,13 +185,13 @@ func drawZipLabel(b:BitmapCanvas, _ zip:Int, _ p:CGPoint, _ name:String?=nil) {
     
     let font = NSFont(name: "Courier", size: 18)!
     
-    let textWidth = BitmapCanvas.textWidth(s, font:font)
+    let textWidth = BitmapCanvas.textWidth(s as NSString, font:font)
     
     b.rectangle(R(p.x,p.y,10 + textWidth,26), stroke:"black", fill:colorForZIP(zip))
     b.text(s, P(p.x+5,p.y+5), font:font)
 }
 
-func printZipDistribution(zipForTownCode:[Int:(Int,String)]) {
+func printZipDistribution(_ zipForTownCode:[Int:(Int,String)]) {
     var d : [Int:Int] = [:]
     
     print("--", zipForTownCode[4284])
@@ -208,7 +208,7 @@ func printZipDistribution(zipForTownCode:[Int:(Int,String)]) {
         d[shortZip]? += 1
     }
     
-    let a = d.sort {$1.0 < $0.0}
+    let a = d.sorted {$1.0 < $0.0}
     
     for t in a {
         if t.1 != 0 {
@@ -258,7 +258,7 @@ func drawZIPCodes() throws {
     let src = try ShapefileReader(path: "/Users/nst/Projects/ShapefileReader/data/g1k15.shp")
     
     for shape in src.shp.shapeGenerator() {
-        b.shape(shape, NSColor.clearColor(), lineWidth: 1.5)
+        b.shape(shape, NSColor.clear, lineWidth: 1.5)
     }
     
     // ZIP labels
@@ -310,11 +310,11 @@ func drawZIPCodes() throws {
 func drawZIPCodesPDF() throws {
     let sr = try ShapefileReader(path: "/Users/nst/Projects/ShapefileReader/data/g2g15.shp")
     let view = ShapefileView(maxWidth: 2000, maxHeight: 2000, bbox:sr.shp!.bbox, color:"SkyBlue")!
-    let pdfData = view.dataWithPDFInsideRect(view.frame)
+    let pdfData = view.dataWithPDF(inside: view.frame)
     let path = "/tmp/switzerland_zip.pdf"
-    let success = pdfData.writeToFile(path, atomically: true)
+    let success = (try? pdfData.write(to: URL(fileURLWithPath: path), options: [.atomic])) != nil
     if success {
-        NSWorkspace.sharedWorkspace().openFile(path)
+        NSWorkspace.shared().openFile(path)
     }
 }
 

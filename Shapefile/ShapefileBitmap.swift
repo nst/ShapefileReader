@@ -32,26 +32,26 @@ class ShapefileBitmap : BitmapCanvas {
         self.bbox = bbox
     }
     
-    func shape(shape:Shape, _ color:ConvertibleToNSColor?, lineWidth:CGFloat=1.0) {
+    func shape(_ shape:Shape, _ color:ConvertibleToNSColor?, lineWidth:CGFloat=1.0) {
         
-        CGContextSaveGState(self.cgContext)
+        self.cgContext.saveGState()
         
         // shapefile coordinates start bottom left
-        CGContextTranslateCTM(self.cgContext, 0, CGFloat(self.height))
-        CGContextScaleCTM(self.cgContext, 1.0, -1.0)
+        self.cgContext.translateBy(x: 0, y: CGFloat(self.height))
+        self.cgContext.scaleBy(x: 1.0, y: -1.0)
         
         // scale and translate according to bbox
-        CGContextScaleCTM(self.cgContext, CGFloat(scale), CGFloat(scale))
-        CGContextTranslateCTM(self.cgContext, CGFloat(-self.bbox.x_min), CGFloat(-self.bbox.y_min))
+        self.cgContext.scaleBy(x: CGFloat(scale), y: CGFloat(scale))
+        self.cgContext.translateBy(x: CGFloat(-self.bbox.x_min), y: CGFloat(-self.bbox.y_min))
         
         for points in shape.partPointsGenerator() {
             self.polygon(points, lineWidth:lineWidth / CGFloat(scale), fill:color)
         }
         
-        CGContextRestoreGState(self.cgContext)
+        self.cgContext.restoreGState()
     }
     
-    func scaleVertical(rect:CGRect, startColor:ConvertibleToNSColor, stopColor:ConvertibleToNSColor, min:Int, max:Int) {
+    func scaleVertical(_ rect:CGRect, startColor:ConvertibleToNSColor, stopColor:ConvertibleToNSColor, min:Int, max:Int) {
         // TODO: support horizontal scale
         // TODO: improve generalisation with more options related to graduations
         
@@ -65,15 +65,15 @@ class ShapefileBitmap : BitmapCanvas {
             c2.redComponent, c2.greenComponent, c2.blueComponent, c2.alphaComponent // end color
         ]
         
-        let gradient = CGGradientCreateWithColorComponents(CGColorSpaceCreateDeviceRGB(), components, locations, count)
+        guard let gradient = CGGradient(colorSpace: CGColorSpaceCreateDeviceRGB(), colorComponents: components, locations: locations, count: count) else { assertionFailure(); return }
         
-        CGContextSaveGState(self.cgContext)
-        CGContextAddRect(self.cgContext, rect)
-        CGContextClip(self.cgContext)
+        self.cgContext.saveGState()
+        self.cgContext.addRect(rect)
+        self.cgContext.clip()
         let startPoint = P(rect.origin.x,rect.origin.y)
         let endPoint = P(rect.origin.x+rect.size.width, rect.origin.y+rect.size.height)
-        CGContextDrawLinearGradient (self.cgContext, gradient, startPoint, endPoint, [])
-        CGContextRestoreGState(self.cgContext)
+        self.cgContext.drawLinearGradient (gradient, start: startPoint, end: endPoint, options: [])
+        self.cgContext.restoreGState()
         
         let delta = max - min
         for value in min..<max {
@@ -90,6 +90,6 @@ class ShapefileBitmap : BitmapCanvas {
         }
         
         self.setAllowsAntialiasing(false)
-        CGContextStrokeRect(self.cgContext, rect)
+        self.cgContext.stroke(rect)
     }
 }

@@ -12,24 +12,35 @@
 
 import Foundation
 import CoreGraphics
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 typealias MapPoint = CGPoint
 
 enum ShapeType : Int {
-    case NullShape = 0
-    case Point = 1
-    case PolyLine = 3
-    case Polygon = 5
-    case Multipoint = 8
-    case PointZ = 11
-    case PolylineZ = 13
-    case PolygonZ = 15
-    case MultipointZ = 18
-    case PointM = 21
-    case PolylineM = 23
-    case PolygonM = 25
-    case MultipointM = 28
-    case Multipatch = 31
+    case nullShape = 0
+    case point = 1
+    case polyLine = 3
+    case polygon = 5
+    case multipoint = 8
+    case pointZ = 11
+    case polylineZ = 13
+    case polygonZ = 15
+    case multipointZ = 18
+    case pointM = 21
+    case polylineM = 23
+    case polygonM = 25
+    case multipointM = 28
+    case multipatch = 31
     
     var hasBoundingBox : Bool {
         return [3,5,8,13,15,18,23,25,28,31].contains(self.rawValue)
@@ -65,7 +76,7 @@ enum ShapeType : Int {
 }
 
 class Shape {
-    init(type:ShapeType = .NullShape) {
+    init(type:ShapeType = .nullShape) {
         self.shapeType = type
     }
     
@@ -77,14 +88,14 @@ class Shape {
     var z : Double = 0.0
     var m : [Double?] = []
     
-    func partPointsGenerator() -> AnyGenerator<[MapPoint]> {
+    func partPointsGenerator() -> AnyIterator<[MapPoint]> {
         
         var indices = Array(self.parts)
         indices.append(self.points.count-1)
         
         var i = 0
         
-        return AnyGenerator {
+        return AnyIterator {
             if self.shapeType.hasParts == false { return nil }
             
             if i == indices.count - 1 { return nil }
@@ -102,13 +113,13 @@ class DBFReader {
     // dBase III+ specs http://www.oocities.org/geoff_wass/dBASE/GaryWhite/dBASE/FAQ/qformt.htm#A
     // extended with dBase IV 2.0 'F' type
 
-    enum Errors: ErrorType {
-        case CannotReadFile(path:String)
+    enum Errors: Error {
+        case cannotReadFile(path:String)
     }
     
-    typealias DBFRecord = [AnyObject]
+    typealias DBFRecord = [Any]
     
-    var fileHandle : NSFileHandle!
+    var fileHandle : FileHandle!
     var numberOfRecords : Int!
     var fileType : Int!
     var lastUpdate : String! // YYYY-MM-DD
@@ -118,24 +129,24 @@ class DBFReader {
     var recordFormat : String!
     
     init(path:String) throws {
-        self.fileHandle = try NSFileHandle(forReadingFromURL: NSURL(fileURLWithPath: path))
-        self.readHeader()
+        self.fileHandle = try FileHandle(forReadingFrom: URL(fileURLWithPath: path))
+        try self.readHeader()
     }
     
     deinit {
         self.fileHandle.closeFile()
     }
     
-    func readHeader() {
+    func readHeader() throws {
         
         guard let f = self.fileHandle else {
             print("Shapefile Reader requires a shapefile or file-like object. (no dbf file found)")
             return
         }
         
-        f.seekToFileOffset(0)
+        f.seek(toFileOffset: 0)
         
-        let a = unpack("<BBBBIHH20x", f.readDataOfLength(32))
+        let a = try unpack("<BBBBIHH20x", f.readData(ofLength: 32))
         
         self.fileType = a[0] as! Int
         let YY = a[1] as! Int
@@ -154,28 +165,28 @@ class DBFReader {
         
         self.fields = []
         for _ in 0..<numFields {
-            let fieldDesc = unpack("<11sc4xBB14x", f.readDataOfLength(32)) // [name, type CDFLMN, length, count]
-            self.fields.append(fieldDesc)
+            let fieldDesc = try unpack("<11sc4xBB14x", f.readData(ofLength: 32)) // [name, type CDFLMN, length, count]
+            self.fields.append(fieldDesc as [AnyObject])
         }
         
-        let terminator = unpack("<s", f.readDataOfLength(1))[0] as! String
+        let terminator = try unpack("<s", f.readData(ofLength: 1))[0] as! String
         assert(terminator == "\r", "unexpected terminator")
         
-        self.fields.insert(["DeletionFlag", "C", 1, 0], atIndex: 0)
+        self.fields.insert(["DeletionFlag" as AnyObject, "C" as AnyObject, 1 as AnyObject, 0 as AnyObject], at: 0)
         
         self.recordFormat = self.buildDBFRecordFormat()
     }
     
-    private func recordAtOffset(offset:UInt64) -> DBFRecord {
+    fileprivate func recordAtOffset(_ offset:UInt64) throws -> DBFRecord {
         
         guard let f = self.fileHandle else {
             print("dbf file is missing")
             return []
         }
         
-        f.seekToFileOffset(offset)
+        f.seek(toFileOffset: offset)
         
-        guard let recordContents = unpack(self.recordFormat, f.readDataOfLength(self.recordLengthFromHeader)) as? [String] else {
+        guard let recordContents = try! unpack(self.recordFormat, f.readData(ofLength: self.recordLengthFromHeader)) as? [NSString] else {
             print("bad record contents")
             return []
         }
@@ -187,7 +198,7 @@ class DBFReader {
         
         var record : DBFRecord = []
         
-        for (fields, value) in Array(Zip2Sequence(self.fields, recordContents)) {
+        for (fields, value) in Array(zip(self.fields, recordContents)) {
             
             let name = fields[0] as! String
             let type = fields[1] as! String
@@ -196,20 +207,20 @@ class DBFReader {
             
             if name == "DeletionFlag" { continue }
             
-            let trimmedValue = value.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+            let trimmedValue = value.trimmingCharacters(in: CharacterSet.whitespaces)
             
             if trimmedValue.characters.count == 0 {
                 record.append("")
                 continue
             }
             
-            var v : AnyObject = ""
+            var v : Any = ""
             
             switch type {
             case "N": // Numeric, Number stored as a string, right justified, and padded with blanks to the width of the field.
                 if trimmedValue == "" {
                     v = trimmedValue
-                } else if deci || trimmedValue.containsString(".") {
+                } else if deci || trimmedValue.contains(".") {
                     v = Double(trimmedValue)!
                 } else {
                     v = Int(trimmedValue)!
@@ -236,26 +247,26 @@ class DBFReader {
     }
     
     subscript(i:Int) -> DBFRecord {
-        return recordAtIndex(i)
+        return try! recordAtIndex(i)
     }
     
-    func recordAtIndex(i:Int = 0) -> DBFRecord {
+    func recordAtIndex(_ i:Int = 0) throws -> DBFRecord {
         
         guard let f = self.fileHandle else {
             print("no dbf")
             return []
         }
         
-        f.seekToFileOffset(0)
+        f.seek(toFileOffset: 0)
         assert(headerLength != 0)
         let offset = headerLength + (i * recordLengthFromHeader)
-        return self.recordAtOffset(UInt64(offset))
+        return try self.recordAtOffset(UInt64(offset))
     }
     
-    func recordGenerator() -> AnyGenerator<DBFRecord> {
+    func recordGenerator() throws -> AnyIterator<DBFRecord> {
         
         guard let n = self.numberOfRecords else {
-            return AnyGenerator {
+            return AnyIterator {
                 print("-- unknown number of records")
                 return nil
             }
@@ -263,19 +274,19 @@ class DBFReader {
         
         var i = 0
         
-        return AnyGenerator {
+        return AnyIterator {
             if i >= n { return nil}
-            let rec = self.recordAtIndex(i)
+            let rec = try! self.recordAtIndex(i)
             i += 1
             return rec
         }
     }
     
-    func allRecords() -> [DBFRecord] {
+    func allRecords() throws -> [DBFRecord] {
         
         var records : [DBFRecord] = []
         
-        let generator = self.recordGenerator()
+        let generator = try self.recordGenerator()
         
         while let r = generator.next() {
             records.append(r)
@@ -284,11 +295,11 @@ class DBFReader {
         return records
     }
     
-    private func buildDBFRecordFormat() -> String {
+    fileprivate func buildDBFRecordFormat() -> String {
         let a = self.fields.filter({ $0[2] is Int }).map({ $0[2] })
         let sizes = a as! [Int]
-        let totalSize = sizes.reduce(0, combine: +)
-        let format = "<" + sizes.map( { String($0) + "s" } ).joinWithSeparator("")
+        let totalSize = sizes.reduce(0, +)
+        let format = "<" + sizes.map( { String($0) + "s" } ).joined(separator: "")
         
         if totalSize != recordLengthFromHeader {
             print("-- error: record size declated in header \(recordLengthFromHeader) != record size declared in fields format \(totalSize)")
@@ -301,32 +312,32 @@ class DBFReader {
 
 class SHPReader {
     
-    var fileHandle : NSFileHandle!
-    var shapeType : ShapeType = .NullShape
+    var fileHandle : FileHandle!
+    var shapeType : ShapeType = .nullShape
     var bbox : (x_min:Double, y_min:Double, x_max:Double, y_max:Double) = (0.0,0.0,0.0,0.0) // Xmin, Ymin, Xmax, Ymax
     var elevation : (z_min:Double, z_max:Double) = (0.0, 0.0)
     var measure : (m_min:Double, m_max:Double) = (0.0, 0.0)
     var shpLength : UInt64 = 0
     
     init(path:String) throws {
-        self.fileHandle = try NSFileHandle(forReadingFromURL: NSURL(fileURLWithPath: path))
-        self.readHeader()
+        self.fileHandle = try FileHandle(forReadingFrom: URL(fileURLWithPath: path))
+        try self.readHeader()
     }
     
     deinit {
         self.fileHandle.closeFile()
     }
     
-    private func readHeader() {
+    fileprivate func readHeader() throws {
         
-        let f = self.fileHandle
+        let f : FileHandle = self.fileHandle
         
-        f.seekToFileOffset(24)
+        f.seek(toFileOffset: 24)
         
-        let l = unpack(">i", f.readDataOfLength(4))
+        let l = try unpack(">i", f.readData(ofLength: 4))
         self.shpLength = UInt64((l[0] as! Int) * 2)
         
-        let a = unpack("<ii", f.readDataOfLength(8))
+        let a = try unpack("<ii", f.readData(ofLength: 8))
         //let version = a[0] as! Int
         let shapeTypeInt = a[1] as! Int
         guard let shapeType = ShapeType(rawValue: shapeTypeInt) else {
@@ -335,10 +346,10 @@ class SHPReader {
         }
         self.shapeType = shapeType
         
-        let b = unpack("<4d", f.readDataOfLength(32)).map({ $0 as! Double })
+        let b = try unpack("<4d", f.readData(ofLength: 32)).map({ $0 as! Double })
         self.bbox = (b[0],b[1],b[2],b[3])
         
-        let c = unpack("<4d", f.readDataOfLength(32)).map({ $0 as! Double })
+        let c = try unpack("<4d", f.readData(ofLength: 32)).map({ $0 as! Double })
         self.elevation = (c[0], c[1])
         self.measure = (c[2], c[3])
         
@@ -352,7 +363,7 @@ class SHPReader {
         }
     }
     
-    func shapeAtOffset(offset:UInt64) -> (next:UInt64, shape:Shape)? {
+    func shapeAtOffset(_ offset:UInt64) throws -> (next:UInt64, shape:Shape)? {
         
         if offset == shpLength { return nil }
         assert(offset < shpLength, "trying to read shape at offset \(offset), but shpLength is only \(shpLength)")
@@ -361,66 +372,66 @@ class SHPReader {
         var nParts : Int = 0
         var nPoints : Int = 0
         
-        let f = self.fileHandle
+        let f : FileHandle = self.fileHandle
         
-        f.seekToFileOffset(offset)
+        f.seek(toFileOffset: offset)
         
-        let l = unpack(">2i", f.readDataOfLength(8))
+        let l = try unpack(">2i", f.readData(ofLength: 8))
         //let recNum = l[0] as! Int
         let recLength = l[1] as! Int
         
         let next = f.offsetInFile + UInt64((2 * recLength))
         
-        let shapeTypeInt = unpack("<i", f.readDataOfLength(4))[0] as! Int
+        let shapeTypeInt = try unpack("<i", f.readData(ofLength: 4))[0] as! Int
         
         record.shapeType = ShapeType(rawValue: shapeTypeInt)!
         
         if shapeType.hasBoundingBox {
-            let a = unpack("<4d", f.readDataOfLength(32)).map({ $0 as! Double })
+            let a = try unpack("<4d", f.readData(ofLength: 32)).map({ $0 as! Double })
             record.bbox = (a[0],a[1],a[2],a[3])
         }
         
         if shapeType.hasParts {
-            nParts = unpack("<i", f.readDataOfLength(4))[0] as! Int
+            nParts = try unpack("<i", f.readData(ofLength: 4))[0] as! Int
         }
         
         if shapeType.hasPoints {
-            nPoints = unpack("<i", f.readDataOfLength(4))[0] as! Int
+            nPoints = try unpack("<i", f.readData(ofLength: 4))[0] as! Int
         }
         
         if nParts > 0 {
-            record.parts = unpack("<\(nParts)i", f.readDataOfLength(nParts * 4)).map({ $0 as! Int })
+            record.parts = try unpack("<\(nParts)i", f.readData(ofLength: nParts * 4)).map({ $0 as! Int })
         }
         
-        if shapeType == .Multipatch {
-            record.partTypes = unpack("<\(nParts)i", f.readDataOfLength(nParts * 4)).map({ $0 as! Int })
+        if shapeType == .multipatch {
+            record.partTypes = try unpack("<\(nParts)i", f.readData(ofLength: nParts * 4)).map({ $0 as! Int })
         }
         
         var recPoints : [MapPoint] = []
         for _ in 0..<nPoints {
-            let points = unpack("<2d", f.readDataOfLength(16)).map({ $0 as! Double })
-            recPoints.append(CGPointMake(CGFloat(points[0]),CGFloat(points[1])))
+            let points = try unpack("<2d", f.readData(ofLength: 16)).map({ $0 as! Double })
+            recPoints.append(CGPoint(x: CGFloat(points[0]),y: CGFloat(points[1])))
         }
         record.points = recPoints
         
         if shapeType.hasZValues {
-            let a = unpack("<2d", f.readDataOfLength(16)).map({ $0 as! Double })
+            let a = try unpack("<2d", f.readData(ofLength: 16)).map({ $0 as! Double })
             let zmin = a[0]
             let zmax = a[1]
             print("zmin: \(zmin), zmax: \(zmax)")
             
-            record.z = unpack("<\(nPoints)d", f.readDataOfLength(nPoints * 8)).map({ $0 as! Double })[0]
+            record.z = try unpack("<\(nPoints)d", f.readData(ofLength: nPoints * 8)).map({ $0 as! Double })[0]
         }
         
         if shapeType.hasMValues && self.measure.m_min != 0.0 && self.measure.m_max != 0.0 {
-            let a = unpack("<2d", f.readDataOfLength(16)).map({ $0 as! Double })
+            let a = try unpack("<2d", f.readData(ofLength: 16)).map({ $0 as! Double })
             let mmin = a[0]
             let mmax = a[1]
             print("mmin: \(mmin), mmax: \(mmax)")
             
             // Spec: Any floating point number smaller than –10e38 is considered by a shapefile reader to represent a "no data" value.
             record.m = []
-            for m in unpack("<\(nPoints)d", f.readDataOfLength(nPoints * 8)).map({ $0 as! Double }) {
+            for m in try unpack("<\(nPoints)d", f.readData(ofLength: nPoints * 8)).map({ $0 as! Double }) {
                 if m < -10e38 {
                     record.m.append(nil)
                 } else {
@@ -430,16 +441,16 @@ class SHPReader {
         }
         
         if shapeType.hasSinglePoint {
-            let point = unpack("<2d", f.readDataOfLength(16)).map({ $0 as! Double })
-            record.points = [CGPointMake(CGFloat(point[0]),CGFloat(point[1]))]
+            let point = try unpack("<2d", f.readData(ofLength: 16)).map({ $0 as! Double })
+            record.points = [CGPoint(x: CGFloat(point[0]),y: CGFloat(point[1]))]
         }
         
         if shapeType.hasSingleZ {
-            record.z = unpack("<d", f.readDataOfLength(8)).map({ $0 as! Double })[0]
+            record.z = try unpack("<d", f.readData(ofLength: 8)).map({ $0 as! Double })[0]
         }
         
         if shapeType.hasSingleM {
-            let a = unpack("<d", f.readDataOfLength(8)).map({ $0 as? Double })
+            let a = try unpack("<d", f.readData(ofLength: 8)).map({ $0 as? Double })
             let m = a[0] < -10e38 ? nil : a[0]
             record.m = [m]
         }
@@ -447,12 +458,12 @@ class SHPReader {
         return (next, record)
     }
     
-    func shapeGenerator() -> AnyGenerator<Shape> {
+    func shapeGenerator() -> AnyIterator<Shape> {
         
         var nextIndex : UInt64 = 100
         
-        return AnyGenerator {
-            if let (next, shape) = self.shapeAtOffset(nextIndex) {
+        return AnyIterator {
+            if let (next, shape) = try! self.shapeAtOffset(nextIndex) {
                 nextIndex = next
                 return shape
             }
@@ -483,7 +494,7 @@ class SHXReader {
     https://en.wikipedia.org/wiki/Shapefile
     */
     
-    var fileHandle : NSFileHandle!
+    var fileHandle : FileHandle!
     var shapeOffsets : [Int] = []
     
     var numberOfShapes : Int {
@@ -491,15 +502,15 @@ class SHXReader {
     }
     
     init(path:String) throws {
-        self.fileHandle = try NSFileHandle(forReadingFromURL: NSURL(fileURLWithPath: path))
-        self.shapeOffsets = self.readOffsets()
+        self.fileHandle = try FileHandle(forReadingFrom: URL(fileURLWithPath: path))
+        self.shapeOffsets = try self.readOffsets()
     }
     
     deinit {
         self.fileHandle?.closeFile()
     }
     
-    private func readOffsets() -> [Int] {
+    fileprivate func readOffsets() throws -> [Int] {
         
         guard let f = self.fileHandle else {
             print("no shx")
@@ -507,8 +518,8 @@ class SHXReader {
         }
         
         // read number of records
-        f.seekToFileOffset(24)
-        let a = unpack(">i", f.readDataOfLength(4))
+        f.seek(toFileOffset: 24)
+        let a = try unpack(">i", f.readData(ofLength: 4))
         let halfLength = a[0] as! Int
         let shxRecordLength = (halfLength * 2) - 100
         var numRecords = shxRecordLength / 8
@@ -530,8 +541,8 @@ class SHXReader {
         // read the offsets
         for r in 0..<numRecords {
             let offset = UInt64(100 + 8*r)
-            f.seekToFileOffset(offset)
-            let b = unpack(">i", f.readDataOfLength(4))
+            f.seek(toFileOffset: offset)
+            let b = try unpack(">i", f.readData(ofLength: 4))
             let i = b[0] as! Int
             offsets.append(i * 2)
         }
@@ -539,7 +550,7 @@ class SHXReader {
         return offsets
     }
     
-    func shapeOffsetAtIndex(i:Int) -> Int? {
+    func shapeOffsetAtIndex(_ i:Int) -> Int? {
         return i < self.shapeOffsets.count ? self.shapeOffsets[i] : nil
     }
 }
@@ -554,7 +565,7 @@ class ShapefileReader {
     
     init(path:String) throws {
         
-        self.shapeName = (path as NSString).stringByDeletingPathExtension
+        self.shapeName = (path as NSString).deletingPathExtension
 
         self.shp = try SHPReader(path: "\(shapeName).shp")
         self.dbf = try DBFReader(path: "\(shapeName).dbf")
@@ -568,18 +579,21 @@ class ShapefileReader {
         
         guard let offset = shx.shapeOffsetAtIndex(i) else { return nil }
         
-        if let (_, shape) = self.shp.shapeAtOffset(UInt64(offset)) {
-            return shape
+        do {
+            if let (_, shape) = try self.shp.shapeAtOffset(UInt64(offset)) {
+                return shape
+            }
+        } catch {
         }
-        
+
         return nil
-    }
+}
     
-    func shapeAndRecordGenerator() -> AnyGenerator<(Shape, DBFReader.DBFRecord)> {
+    func shapeAndRecordGenerator() -> AnyIterator<(Shape, DBFReader.DBFRecord)> {
         
         var i = 0
         
-        return AnyGenerator {
+        return AnyIterator {
             guard let s = self[i] else { return nil }
             guard let r = self.dbf?[i] else { return nil }
             i += 1

@@ -12,17 +12,17 @@ class CanvasView : NSView {
     
     var cgContext : CGContext!
     
-    private func degreesToRadians(x:CGFloat) -> CGFloat {
+    fileprivate func degreesToRadians(_ x:CGFloat) -> CGFloat {
         return (M_PI * x / 180.0)
     }
 
-    override func drawRect(dirtyRect: NSRect) {
-        super.drawRect(dirtyRect)
+    override func draw(_ dirtyRect: NSRect) {
+        super.draw(dirtyRect)
         
-        self.cgContext = unsafeBitCast(NSGraphicsContext.currentContext()!.graphicsPort, CGContextRef.self)
+        self.cgContext = unsafeBitCast(NSGraphicsContext.current()!.graphicsPort, to: CGContext.self)
     }
     
-    func text(text:String, _ p:NSPoint, rotationRadians:CGFloat?, font : NSFont = NSFont(name: "Monaco", size: 10)!, color color_ : ConvertibleToNSColor = NSColor.blackColor()) {
+    func text(_ text:String, _ p:NSPoint, rotationRadians:CGFloat?, font : NSFont = NSFont(name: "Monaco", size: 10)!, color color_ : ConvertibleToNSColor = NSColor.black) {
         
         let color = color_.color
         
@@ -31,61 +31,61 @@ class CanvasView : NSView {
             NSForegroundColorAttributeName:color
         ]
         
-        CGContextSaveGState(cgContext)
+        cgContext.saveGState()
         
         if let radians = rotationRadians {
-            CGContextTranslateCTM(cgContext, p.x, p.y);
-            CGContextRotateCTM(cgContext, radians)
-            CGContextTranslateCTM(cgContext, -p.x, -p.y);
+            cgContext.translateBy(x: p.x, y: p.y);
+            cgContext.rotate(by: radians)
+            cgContext.translateBy(x: -p.x, y: -p.y);
         }
         
-        CGContextScaleCTM(cgContext, 1.0, -1.0)
-        CGContextTranslateCTM(cgContext, 0.0, -2.0 * p.y - font.pointSize)
+        cgContext.scaleBy(x: 1.0, y: -1.0)
+        cgContext.translateBy(x: 0.0, y: -2.0 * p.y - font.pointSize)
         
-        text.drawAtPoint(p, withAttributes: attr)
+        text.draw(at: p, withAttributes: attr)
         
-        CGContextRestoreGState(cgContext)
+        cgContext.restoreGState()
     }
     
-    func text(text:String, _ p:NSPoint, rotationDegrees degrees:CGFloat = 0.0, font : NSFont = NSFont(name: "Monaco", size: 10)!, color : ConvertibleToNSColor = NSColor.blackColor()) {
+    func text(_ text:String, _ p:NSPoint, rotationDegrees degrees:CGFloat = 0.0, font : NSFont = NSFont(name: "Monaco", size: 10)!, color : ConvertibleToNSColor = NSColor.black) {
         self.text(text, p, rotationRadians: degreesToRadians(degrees), font: font, color: color)
     }
         
-    func rectangle(rect:NSRect, stroke stroke_:ConvertibleToNSColor? = NSColor.blackColor(), fill fill_:ConvertibleToNSColor? = nil) {
+    func rectangle(_ rect:NSRect, stroke stroke_:ConvertibleToNSColor? = NSColor.black, fill fill_:ConvertibleToNSColor? = nil) {
         
         let stroke = stroke_?.color
         let fill = fill_?.color
         
-        CGContextSaveGState(cgContext)
+        cgContext.saveGState()
         
         if let existingFillColor = fill {
             existingFillColor.setFill()
-            NSBezierPath.fillRect(rect)
+            NSBezierPath.fill(rect)
         }
         
         if let existingStrokeColor = stroke {
             existingStrokeColor.setStroke()
-            NSBezierPath.strokeRect(rect)
+            NSBezierPath.stroke(rect)
         }
         
-        CGContextRestoreGState(cgContext)
+        cgContext.restoreGState()
     }
     
-    func polygon(points:[NSPoint], stroke stroke_:ConvertibleToNSColor? = NSColor.blackColor(), lineWidth:CGFloat=1.0, fill fill_:ConvertibleToNSColor? = nil) {
+    func polygon(_ points:[NSPoint], stroke stroke_:ConvertibleToNSColor? = NSColor.black, lineWidth:CGFloat=1.0, fill fill_:ConvertibleToNSColor? = nil) {
         
         guard points.count >= 3 else {
             assertionFailure("at least 3 points are needed")
             return
         }
         
-        CGContextSaveGState(cgContext)
+        cgContext.saveGState()
         
         let path = NSBezierPath()
         
-        path.moveToPoint(points[0])
+        path.move(to: points[0])
         
         for i in 1...points.count-1 {
-            path.lineToPoint(points[i])
+            path.line(to: points[i])
         }
         
         if let existingFillColor = fill_?.color {
@@ -93,7 +93,7 @@ class CanvasView : NSView {
             path.fill()
         }
         
-        path.closePath()
+        path.close()
         
         if let existingStrokeColor = stroke_?.color {
             existingStrokeColor.setStroke()
@@ -101,7 +101,7 @@ class CanvasView : NSView {
             path.stroke()
         }
         
-        CGContextRestoreGState(cgContext)
+        cgContext.restoreGState()
     }
     
 }

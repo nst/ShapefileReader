@@ -23,23 +23,23 @@ class ShapefileTests: XCTestCase {
     // http://www.arcgis.com/home/item.html?id=a5067fb3b0b74b188d7b650fa5c64b39
     
     func testRecords() {
-        let path = NSBundle(forClass: self.dynamicType).pathForResource("Kantone", ofType: "shp")!
+        let path = Bundle(for: ShapefileTests.self).path(forResource:"Kantone", ofType: "shp")!
         
         let sr = try! ShapefileReader(path:path)
 
         XCTAssertEqual(sr.dbf!.numberOfRecords, 26)
 
-        let records = sr.dbf!.allRecords()
+        let records = try! sr.dbf!.allRecords()
         XCTAssertEqual(records.count, 26)
 
-        let rec = sr.dbf!.recordAtIndex(1)
+        let rec = try! sr.dbf!.recordAtIndex(1)
         XCTAssertEqual(rec[1] as? String, "BE")
 
         print("\(#function) pass")
     }
 
     func testShapes() {
-        let path = NSBundle(forClass: self.dynamicType).pathForResource("Kantone", ofType: "shp")!
+        let path = Bundle(for: ShapefileTests.self).path(forResource:"Kantone", ofType: "shp")!
         
         let sr = try! ShapefileReader(path:path)
 
@@ -47,21 +47,21 @@ class ShapefileTests: XCTestCase {
         XCTAssertEqual(shapes.count, 26)
         
         let shape2 = shapes[2]
-        XCTAssertEqual(shape2.shapeType, ShapeType.Polygon)
+        XCTAssertEqual(shape2.shapeType, ShapeType.polygon)
         XCTAssertEqual(shape2.parts.count, 5)
         XCTAssertEqual(shape2.points.count, 531)
         XCTAssert(shape2.bbox.x_max > 0)
         
-        XCTAssertEqual(sr.shp.allShapes().count, sr.dbf!.allRecords().count)
+        XCTAssertEqual(sr.shp.allShapes().count, try! sr.dbf!.allRecords().count)
     }
 
     func testShx() {
-        let path = NSBundle(forClass: self.dynamicType).pathForResource("Kantone", ofType: "shp")!
+        let path = Bundle(for: ShapefileTests.self).path(forResource:"Kantone", ofType: "shp")!
         
         let sr = try! ShapefileReader(path:path)
 
         let offset = sr.shx!.shapeOffsetAtIndex(2)!
-        let (_, shape2_) = sr.shp!.shapeAtOffset(UInt64(offset))!
+        let (_, shape2_) = try! sr.shp!.shapeAtOffset(UInt64(offset))!
         
         let shape2__ = sr.shp!.allShapes()[2]
         let shape2___ = sr[2]!
