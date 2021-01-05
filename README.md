@@ -1,6 +1,10 @@
 # ShapefileReader
 __A shapefile reader in Swift__
 
+---
+This library is no longer maintained. Please use https://github.com/votenotes/ShapefileReader instead.
+---
+
 __Description__
 
 Reads data from files in [Shapefile](https://en.wikipedia.org/wiki/Shapefile) format.
